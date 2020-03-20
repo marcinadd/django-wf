@@ -1,8 +1,13 @@
-<h1>Klasy</h1>
-<ul>
-    {% for clazz in object_list %}
-        <li>{{ clazz.name }} - {{ clazz.year }}</li>
-    {% empty %}
-        <li>Nie znalaziono żadnej klasy</li>
-    {% endfor %}
-</ul>
+{% extends 'template.html' %}
+{% block title %}Klasy{% endblock title %}
+
+{% block heading %}Klasy{% endblock heading %}
+{% block content %}
+    <ul>
+        {% for clazz in object_list %}
+            <li>{{ clazz.name }} - {{ clazz.year }}</li>
+        {% empty %}
+            <li>Nie znalaziono żadnej klasy</li>
+        {% endfor %}
+    </ul>
+{% endblock content %}
