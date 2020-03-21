@@ -1,0 +1,35 @@
+<script
+        src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+        crossorigin="anonymous">
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.formset/1.2.2/jquery.formset.min.js"></script>
+<form class="form-horizontal" method="POST" action="" id="myForm">
+    {% csrf_token %}
+    {{ class_form.as_p }}
+    {% for form in formset %}
+        <div class="row form-row spacer" id="student_0">
+            <div>
+                {{ form.first_name }}
+                {{ form.last_name }}
+            </div>
+        </div>
+    {% endfor %}
+    <div class="row spacer">
+        <div class="col-4 offset-2">
+            <button type="submit" class="btn btn-block btn-primary">Create</button>
+        </div>
+    </div>
+    {{ formset.management_form }}
+</form>
+
+<form action="">
+    {% csrf_token %}
+
+</form>
+
+<script type="text/javascript">
+    $(function () {
+        $('#myForm .form-row div').formset();
+    })
+</script>

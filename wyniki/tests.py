@@ -118,3 +118,33 @@ class StudentUpdateTests(TestCase):
         self.assertEqual(student.first_name, updated.get("first_name"))
         self.assertEqual(student.last_name, updated.get("last_name"))
         self.assertEqual(student.clazz, clazzB)
+
+
+class ClassWithStudentsTests(TestCase):
+
+    def test_get_class_students_create(self):
+        response = self.client.get(reverse("wyniki:classes_create_students"))
+        self.assertEqual(response.status_code, 200)
+        self.assertIsNotNone(response.context["formset"])
+        self.assertIsNotNone(response.context["class_form"])
+
+    def test_post_students_create(self):
+        form_data = {
+            "name": "Ia",
+            "year": "2020",
+            "form-0-first_name": "John",
+            "form-0-last_name": "Smith",
+            "form-1-first_name": "Adam",
+            "form-1-last_name": "Brown",
+            'form-TOTAL_FORMS': "2",
+            'form-INITIAL_FORMS': "0"
+        }
+        response = self.client.post(reverse("wyniki:classes_create_students"), form_data)
+        self.assertEquals(response.status_code, 302)
+        self.assertEquals(Class.objects.all().count(), 1)
+        studentA = Student.objects.get(first_name="John")
+        studentB = Student.objects.get(first_name="Adam")
+        self.assertEquals(studentA.last_name, "Smith")
+        self.assertEquals(studentB.last_name, "Brown")
+        clazz = Class.objects.get(name="Ia")
+        self.assertEquals(clazz.year, 2020)
