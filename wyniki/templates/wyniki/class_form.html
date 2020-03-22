@@ -4,7 +4,45 @@
 {% block heading %}Dodaj klasę{% endblock heading %}
 {% block content %}
     <form method="post">{% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Save">
+        <div class="field is-horizontal">
+            <div class="field-label">
+                <label class="label">Nazwa klasy:</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <div class="control">
+                        <input class="input" type="text" placeholder="Nazwa" name="name">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="field is-horizontal">
+            <div class="field-label">
+                <label class="label">Rok:</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <div class="control">
+                        <input class="input" type="text" placeholder="Rok" name="year">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="field is-horizontal">
+            <div class="field-label">
+
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <div class="control">
+                        <button class="button is-primary" type="submit" value="Save">
+                            Dodaj
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </form>
 {% endblock content %}

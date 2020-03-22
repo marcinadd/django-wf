@@ -1,16 +1,22 @@
-{% for student in presentation %}
-    <div>
-        {{ student.student.first_name }}
-        {{ student.student.last_name }}
-        {% for obj in student.results %}
-            {% if obj.result.value != None %}
-                {{ obj.result.value }}{{ obj.result.sport.unit }}
-            {% else %}
-                -
-            {% endif %}
-        {% endfor %}
-        <div>
+{% extends 'template.html' %}
+{% block title %}IDK{% endblock title %}
 
+{% block heading %}IDK{% endblock heading %}
+{% block content %}
+    {% for student in presentation %}
+        <div>
+            {{ student.student.first_name }}
+            {{ student.student.last_name }}
+            {% for obj in student.results %}
+                {% if obj.result.value != None %}
+                    {{ obj.result.value }}{{ obj.result.sport.unit }}
+                {% else %}
+                    -
+                {% endif %}
+            {% endfor %}
+            <div>
+
+            </div>
         </div>
-    </div>
-{% endfor %}
+    {% endfor %}
+{% endblock content %}

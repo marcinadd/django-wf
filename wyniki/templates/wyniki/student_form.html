@@ -1,4 +1,50 @@
-<form method="post">{% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Save">
-</form>
+{% extends 'template.html' %}
+{% block title %}Dodawanie uczniów{% endblock title %}
+
+{% block heading %}Dodaj ucznia:{% endblock heading %}
+{% block content %}
+    <form method="post">{% csrf_token %}
+        <div class="field is-horizontal">
+            <div class="field-label">
+                <label class="label">Imię:</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <div class="control">
+                        <input class="input" type="text" placeholder="Nazwa" name="first_name">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="field is-horizontal">
+            <div class="field-label">
+                <label class="label">Nazwisko:</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <div class="control">
+                        <input class="input" type="text" placeholder="Rok" name="last_name">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{ form.clazz }}
+
+        <div class="field is-horizontal">
+            <div class="field-label">
+
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <div class="control">
+                        <button class="button is-primary" type="submit" value="Save">
+                            Dodaj
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock content %}
