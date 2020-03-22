@@ -5,7 +5,7 @@
 {% block content %}
     <ul>
         {% for clazz in object_list %}
-            <li>{{ clazz.name }} - {{ clazz.year }}</li>
+            <li>{{ clazz.pk }} {{ clazz.name }} - {{ clazz.year }}</li>
         {% empty %}
             <li>Nie znalaziono żadnej klasy</li>
         {% endfor %}

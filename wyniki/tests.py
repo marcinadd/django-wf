@@ -2,11 +2,16 @@
 from django.test import TestCase
 from django.urls import reverse
 
-from wyniki.models import Class, Student
+from wyniki.models import Class, Student, Group, Result, Sport
+
+studentA_first_name = "John"
+studentA_last_name = "Smith"
+
+studentB_first_name = "Adam"
+studentB_last_name = "Brown"
 
 
 class ClassCreateTests(TestCase):
-
     def test_create_class(self):
         clazz = {"name": "Ia", "year": "2019"}
         response = self.client.post(reverse("wyniki:classes_create"), clazz)
@@ -17,7 +22,6 @@ class ClassCreateTests(TestCase):
 
 
 class ClassListTests(TestCase):
-
     def test_get_classes_when_no_classes(self):
         response = self.client.get(reverse("wyniki:classes_list"))
         self.assertEqual(response.status_code, 200)
@@ -35,7 +39,6 @@ class ClassListTests(TestCase):
 
 
 class ClassDeleteTests(TestCase):
-
     def test_delete_class_which_exists(self):
         clazz = Class(name="Ia", year=2019)
         clazz.save()
@@ -57,11 +60,10 @@ class ClassUpdateTests(TestCase):
 
 
 class StudentCreateTests(TestCase):
-
     def test_create_student(self):
         clazz = Class(name="Ia", year=2020)
         clazz.save()
-        student = {"first_name": "John", "last_name": "Smith", "clazz": str(clazz.id)}
+        student = {"first_name": studentA_first_name, "last_name": studentA_last_name, "clazz": str(clazz.id)}
         response = self.client.post(reverse("wyniki:students_create"), student)
         saved = Student.objects.last()
         self.assertEqual(response.status_code, 302)
@@ -71,7 +73,6 @@ class StudentCreateTests(TestCase):
 
 
 class StudentListTests(TestCase):
-
     def test_get_students_when_no_students(self):
         response = self.client.get(reverse("wyniki:students_list"))
         self.assertEqual(response.status_code, 200)
@@ -84,8 +85,8 @@ class StudentListTests(TestCase):
         clazzA.save()
         clazzB = Class(name="Ib", year=2020)
         clazzB.save()
-        Student(first_name="John", last_name="Smith", clazz=clazzA).save()
-        Student(first_name="Adam", last_name="Brown", clazz=clazzB).save()
+        Student(first_name=studentA_first_name, last_name=studentA_last_name, clazz=clazzA).save()
+        Student(first_name=studentB_first_name, last_name=studentB_last_name, clazz=clazzB).save()
         response = self.client.get(reverse("wyniki:students_list"))
         self.assertEqual(response.status_code, 200)
         self.assertQuerysetEqual(response.context["object_list"],
@@ -94,9 +95,8 @@ class StudentListTests(TestCase):
 
 
 class StudentDeleteTests(TestCase):
-
     def test_delete_student_which_exists(self):
-        student = Student(first_name="John", last_name="Smith")
+        student = Student(first_name=studentA_first_name, last_name=studentA_last_name)
         student.save()
         response = self.client.get(reverse("wyniki:students_delete", args=(student.id,)))
         self.assertEqual(response.status_code, 302)
@@ -109,9 +109,9 @@ class StudentUpdateTests(TestCase):
         clazzA.save()
         clazzB = Class(name="Ib", year=2020)
         clazzB.save()
-        student = Student(first_name="John", last_name="Smith", clazz=clazzA)
+        student = Student(first_name=studentA_first_name, last_name=studentA_last_name, clazz=clazzA)
         student.save()
-        updated = {"first_name": "Adam", "last_name": "Brown", "clazz": str(clazzB.id)}
+        updated = {"first_name": studentB_first_name, "last_name": studentB_last_name, "clazz": str(clazzB.id)}
         response = self.client.post(reverse("wyniki:students_update", args=(student.id,)), updated)
         student.refresh_from_db()
         self.assertEqual(response.status_code, 302)
@@ -121,7 +121,6 @@ class StudentUpdateTests(TestCase):
 
 
 class ClassWithStudentsTests(TestCase):
-
     def test_get_class_students_create(self):
         response = self.client.get(reverse("wyniki:classes_create_students"))
         self.assertEqual(response.status_code, 200)
@@ -132,19 +131,38 @@ class ClassWithStudentsTests(TestCase):
         form_data = {
             "name": "Ia",
             "year": "2020",
-            "form-0-first_name": "John",
-            "form-0-last_name": "Smith",
-            "form-1-first_name": "Adam",
-            "form-1-last_name": "Brown",
+            "form-0-first_name": studentA_first_name,
+            "form-0-last_name": studentA_last_name,
+            "form-1-first_name": studentB_first_name,
+            "form-1-last_name": studentB_last_name,
             'form-TOTAL_FORMS': "2",
             'form-INITIAL_FORMS': "0"
         }
         response = self.client.post(reverse("wyniki:classes_create_students"), form_data)
         self.assertEquals(response.status_code, 302)
         self.assertEquals(Class.objects.all().count(), 1)
-        studentA = Student.objects.get(first_name="John")
-        studentB = Student.objects.get(first_name="Adam")
-        self.assertEquals(studentA.last_name, "Smith")
-        self.assertEquals(studentB.last_name, "Brown")
+        studentA = Student.objects.get(first_name=studentA_first_name)
+        studentB = Student.objects.get(first_name=studentB_first_name)
+        self.assertEquals(studentA.last_name, studentA_last_name)
+        self.assertEquals(studentB.last_name, studentB_last_name)
         clazz = Class.objects.get(name="Ia")
         self.assertEquals(clazz.year, 2020)
+
+
+class ClassResultsTests(TestCase):
+    def test_results_for_class_with_exists(self):
+        groupA = Group.objects.create(name="I")
+        groupB = Group.objects.create(name="II")
+        clazz = Class.objects.create(name="Ia", year=2019)
+        studentA = Student.objects.create(first_name=studentA_first_name, last_name=studentA_last_name, clazz=clazz)
+        studentB = Student.objects.create(first_name=studentB_first_name, last_name=studentB_last_name, clazz=clazz)
+        sport = Sport.objects.create(name="sample")
+        resultA = Result.objects.create(value=3.5, sport=sport, student=studentA, group=groupA)
+        resultB = Result.objects.create(value=4.5, sport=sport, student=studentB, group=groupA)
+        resultC = Result.objects.create(value=5.5, sport=sport, student=studentB, group=groupB)
+        response = self.client.get(reverse("wyniki:classes_results", args=(clazz.id, sport.id,)))
+        self.assertEquals(response.status_code, 200)
+        self.assertContains(response, resultA.value)
+        self.assertContains(response, resultB.value)
+        self.assertContains(response, resultC.value)
+        self.assertIsNotNone(response.context["presentation"])

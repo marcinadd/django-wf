@@ -17,4 +17,5 @@ urlpatterns = [
     path("students/update/<int:pk>", views.StudentUpdate.as_view(), name="students_update"),
 
     path("classes/createWithStudents", views.create_class_with_students, name="classes_create_students"),
+    path("classes/<int:class_id>/results/<int:sport_id>", views.get_results_for_class, name="classes_results"),
 ]

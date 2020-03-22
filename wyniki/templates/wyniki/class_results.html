@@ -1,0 +1,16 @@
+{% for student in presentation %}
+    <div>
+        {{ student.student.first_name }}
+        {{ student.student.last_name }}
+        {% for obj in student.results %}
+            {% if obj.result.value != None %}
+                {{ obj.result.value }}{{ obj.result.sport.unit }}
+            {% else %}
+                -
+            {% endif %}
+        {% endfor %}
+        <div>
+
+        </div>
+    </div>
+{% endfor %}
