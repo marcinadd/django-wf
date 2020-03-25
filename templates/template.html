@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}{% endblock title %}</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'wyniki/style.css' %}">
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 </head>
 <body>
@@ -41,10 +43,26 @@
                 </a>
             </div>
         </div>
+
+        <div class="navbar-item has-dropdown is-hoverable">
+            <a class="navbar-link">
+                Uczniowie
+            </a>
+
+            <div class="navbar-dropdown">
+                <a class="navbar-item" href="{% url 'wyniki:students_list' %}">
+                    Pokaż listę uczniów
+                </a>
+
+                <a class="navbar-item" href="{% url 'wyniki:students_create' %}">
+                    Dodaj uczniów
+                </a>
+            </div>
+        </div>
     </div>
 
     {% if not user.is_authenticated %}
-        <div class="buttons" style="padding-right: 3px">
+        <div class="buttons register_button">
             <a class="button is-primary">
                 <strong>Zarejestruj się</strong>
             </a>

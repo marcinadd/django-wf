@@ -3,11 +3,24 @@
 
 {% block heading %}Klasy{% endblock heading %}
 {% block content %}
-    <ul>
+    <table class="table is-hoverable">
+        <thead>
+        <tr>
+            <th><abbr title="ID klasy">ID</abbr></th>
+            <th>Nazwa klasy:</th>
+            <th>Rok:</th>
+        </tr>
+        <tbody>
         {% for clazz in object_list %}
-            <li>{{ clazz.pk }} {{ clazz.name }} - {{ clazz.year }}</li>
+            <tr>
+                <th>{{ clazz.pk }}</th>
+                <td>{{ clazz.name }}</td>
+                <td>{{ clazz.year }}</td>
+            </tr>
         {% empty %}
-            <li>Nie znalaziono żadnej klasy</li>
+            <p>Nie znalaziono żadnej klasy</p>
         {% endfor %}
-    </ul>
+        </tbody>
+        </thead>
+    </table>
 {% endblock content %}

@@ -1,9 +1,15 @@
-<h1>Uczniowie</h1>
-<h2></h2>
-<ul>
-    {% for student in object_list %}
-        <li>{{ student.name }} - {{ student.year }}</li>
-    {% empty %}
-        <li>Nie znalaziono żadnego ucznia</li>
-    {% endfor %}
-</ul>
+{% extends 'template.html' %}
+{% block title %}Uczniowie{% endblock title %}
+
+{% block heading %}Lista uczniów:{% endblock heading %}
+{% block content %}
+    <h1>Uczniowie</h1>
+    <h2></h2>
+    <ul>
+        {% for student in object_list %}
+            <li>{{ student.name }} - {{ student.year }}</li>
+        {% empty %}
+            <li>Nie znalaziono żadnego ucznia</li>
+        {% endfor %}
+    </ul>
+{% endblock content %}
