@@ -7,7 +7,7 @@
     <h2></h2>
     <ul>
         {% for student in object_list %}
-            <li>{{ student.name }} - {{ student.year }}</li>
+            <li>{{ student.first_name }} - {{ student.last_name }}</li>
         {% empty %}
             <li>Nie znalaziono żadnego ucznia</li>
         {% endfor %}

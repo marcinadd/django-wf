@@ -9,6 +9,7 @@
             <th><abbr title="ID klasy">ID</abbr></th>
             <th>Nazwa klasy:</th>
             <th>Rok:</th>
+            <th>Wyniki:</th>
         </tr>
         <tbody>
         {% for clazz in object_list %}
@@ -16,6 +17,11 @@
                 <th>{{ clazz.pk }}</th>
                 <td>{{ clazz.name }}</td>
                 <td>{{ clazz.year }}</td>
+                <td>
+                    <button type="button" class="btn btn-primary">
+                        <a href="{% url 'wyniki:sports_list' clazz.id %}">Wyniki</a>
+                    </button>
+                </td>
             </tr>
         {% empty %}
             <p>Nie znalaziono żadnej klasy</p>

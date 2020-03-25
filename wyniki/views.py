@@ -4,7 +4,7 @@ from django.views.generic import ListView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
 from wyniki.forms import StudentFormSet, ClassForm
-from wyniki.models import Class, Student, Sport, Result, Group
+from wyniki.models import Class, Student, Sport, Result
 
 
 def index(request):
@@ -85,14 +85,14 @@ def get_results_for_class(request, class_id, sport_id):
     clazz = Class.objects.get(pk=class_id)
     sport = Sport.objects.get(pk=sport_id)
     students = clazz.student_set.all()
-    groups = Group.objects.all()
+    groups = Result.GROUP_CHOICES
 
     presentation = []
     for student in students:
         presentation.append({"student": student, "results": []})
 
     for group in groups:
-        group_results = Result.objects.filter(student__clazz=clazz, sport=sport, group=group)
+        group_results = Result.objects.filter(student__clazz=clazz, sport=sport, group=group[0])
         student_result = {}
         for result in group_results:
             student_result[result.student] = result
@@ -101,4 +101,29 @@ def get_results_for_class(request, class_id, sport_id):
             result = student_result.get(student)
             obj["results"].append({"group": group, "result": result})
 
-    return render(request, "wyniki/class_results.html", {"presentation": presentation})
+    context = {
+        "presentation": presentation,
+        "groups": groups,
+        "clazz": clazz,
+        "sport": sport
+    }
+
+    return render(request, "wyniki/class_results.html", context)
+
+
+def get_sports_details_for_class(request, pk):
+    clazz = Class.objects.get(pk=pk)
+    sports = Sport.objects.all()
+    # TODO Add results counting here
+
+    context = {
+        "clazz": clazz,
+        "sports": sports
+    }
+    return render(request, "wyniki/class_sports_details.html", context)
+
+
+class SportCreate(CreateView):
+    model = Sport
+    fields = ["name", "unit", "more_better"]
+    success_url = reverse_lazy("wyniki:index")

@@ -32,19 +32,20 @@ class Sport(models.Model):
     def __str__(self):
         return self.name
 
-
-class Group(models.Model):
-    name = models.CharField(max_length=20)
-
-    def __str__(self):
-        return self.name
-
-
 class Result(models.Model):
+    FIRST = "FIRST"
+    SECOND = "SECOND"
+    THIRD = "THIRD"
+    GROUP_CHOICES = [
+        (FIRST, "Klasa I"),
+        (SECOND, "Klasa II"),
+        (THIRD, "Klasa III")
+    ]
+
     value = models.DecimalField(max_digits=4, decimal_places=2)
     student = models.ForeignKey(Student, on_delete=models.SET_NULL, null=True)
     sport = models.ForeignKey(Sport, on_delete=models.SET_NULL, null=True)
-    group = models.ForeignKey(Group, on_delete=models.SET_NULL, null=True)
+    group = models.CharField(max_length=20, choices=GROUP_CHOICES, default=FIRST)
     date = models.DateTimeField(null=True)
 
     def __str__(self):

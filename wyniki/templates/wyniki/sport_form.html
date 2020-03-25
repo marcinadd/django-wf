@@ -1,0 +1,23 @@
+{% extends 'template.html' %}
+{% block title %}Dodaj sport{% endblock title %}
+
+{% block heading %}Dodaj sport{% endblock heading %}
+{% block content %}
+    <form method="post">{% csrf_token %}
+        {{ form.as_p }}
+        <div class="field is-horizontal">
+            <div class="field-label">
+
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <div class="control">
+                        <button class="button is-primary" type="submit" value="Save">
+                            Dodaj
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock content %}

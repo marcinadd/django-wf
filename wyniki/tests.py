@@ -2,7 +2,7 @@
 from django.test import TestCase
 from django.urls import reverse
 
-from wyniki.models import Class, Student, Group, Result, Sport
+from wyniki.models import Class, Student, Result, Sport
 
 studentA_first_name = "John"
 studentA_last_name = "Smith"
@@ -151,18 +151,29 @@ class ClassWithStudentsTests(TestCase):
 
 class ClassResultsTests(TestCase):
     def test_results_for_class_with_exists(self):
-        groupA = Group.objects.create(name="I")
-        groupB = Group.objects.create(name="II")
         clazz = Class.objects.create(name="Ia", year=2019)
         studentA = Student.objects.create(first_name=studentA_first_name, last_name=studentA_last_name, clazz=clazz)
         studentB = Student.objects.create(first_name=studentB_first_name, last_name=studentB_last_name, clazz=clazz)
         sport = Sport.objects.create(name="sample")
-        resultA = Result.objects.create(value=3.5, sport=sport, student=studentA, group=groupA)
-        resultB = Result.objects.create(value=4.5, sport=sport, student=studentB, group=groupA)
-        resultC = Result.objects.create(value=5.5, sport=sport, student=studentB, group=groupB)
+        resultA = Result.objects.create(value=3.5, sport=sport, student=studentA, group=Result.FIRST)
+        resultB = Result.objects.create(value=4.5, sport=sport, student=studentB, group=Result.FIRST)
+        resultC = Result.objects.create(value=5.5, sport=sport, student=studentB, group=Result.SECOND)
         response = self.client.get(reverse("wyniki:classes_results", args=(clazz.id, sport.id,)))
         self.assertEquals(response.status_code, 200)
         self.assertContains(response, resultA.value)
         self.assertContains(response, resultB.value)
         self.assertContains(response, resultC.value)
         self.assertIsNotNone(response.context["presentation"])
+        self.assertIsNotNone(response.context["groups"])
+        self.assertIsNotNone(response.context["clazz"])
+        self.assertIsNotNone(response.context["sport"])
+
+
+class SportDetailsTests(TestCase):
+    def test_get_details_for_specified_class(self):
+        clazz = Class.objects.create(name="Ia", year=2019)
+        sport = Sport.objects.create(name="sample")
+        response = self.client.get(reverse("wyniki:sports_list", args=[clazz.id, ]))
+        self.assertEquals(response.status_code, 200)
+        self.assertEquals(response.context["clazz"], clazz)
+        self.assertEquals(response.context["sports"].count(), 1)

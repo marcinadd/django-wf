@@ -1,0 +1,31 @@
+{% extends 'template.html' %}
+{% block title %}Klasa{% endblock title %}
+
+{% block heading %} {{ clazz.name }} {{ clazz.year }} {% endblock heading %}
+{% block content %}
+    <table class="table is-hoverable">
+        <thead>
+        <tr>
+            <th><abbr title="Nazwa">Nazwa</abbr></th>
+            <th>Liczba wpisów:</th>
+            <th>Przejdź:</th>
+        </tr>
+        <tbody>
+
+        {% for sport in sports %}
+            <tr>
+
+                <th>{{ sport.name }}</th>
+                <td>-----</td>
+                <td>
+                    <button type="button" class="btn btn-primary">
+                        <a href="{% url 'wyniki:classes_results' clazz.id sport.id %}">Wyświetl</a>
+                    </button>
+                </td>
+            </tr>
+        {% empty %}
+            <p>Nie znalaziono żadnego sportu</p>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock content %}

@@ -1,22 +1,33 @@
 {% extends 'template.html' %}
-{% block title %}IDK{% endblock title %}
+{% block title %}Wyniki dla klasy {{ clazz }} {{ sport }} {% endblock title %}
 
-{% block heading %}IDK{% endblock heading %}
+{% block heading %}Wyniki dla klasy {{ clazz }} <i>{{ sport }}</i>{% endblock heading %}
 {% block content %}
-    {% for student in presentation %}
-        <div>
-            {{ student.student.first_name }}
-            {{ student.student.last_name }}
-            {% for obj in student.results %}
-                {% if obj.result.value != None %}
-                    {{ obj.result.value }}{{ obj.result.sport.unit }}
-                {% else %}
-                    -
-                {% endif %}
-            {% endfor %}
-            <div>
 
-            </div>
-        </div>
-    {% endfor %}
+    <table class="table is-hoverable">
+        <thead>
+        <tr>
+            <th><abbr title="Nazwa">Nazwisko i imię</abbr></th>
+            {% for group in groups %}
+                <th>{{ group.1 }}</th>
+            {% endfor %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for student in presentation %}
+            <tr>
+                <th> {{ student.student.last_name }} {{ student.student.first_name }}</th>
+                {% for obj in student.results %}
+                    <td>
+                        {% if obj.result.value != None %}
+                            {{ obj.result.value }}{{ obj.result.sport.unit }}
+                        {% else %}
+                            <button class="btn btn-success">+</button>
+                        {% endif %}
+                    </td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock content %}
