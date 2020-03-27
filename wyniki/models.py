@@ -17,6 +17,9 @@ class Student(models.Model):
     def __str__(self):
         return self.first_name + " " + self.last_name + " " + str(self.clazz)
 
+    class Meta:
+        ordering = ['last_name', "first_name"]
+
 
 class Sport(models.Model):
     class Unit(models.TextChoices):

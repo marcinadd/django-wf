@@ -3,8 +3,10 @@
 
 {% block heading %}Wyniki dla klasy {{ clazz }} <i>{{ sport }}</i>{% endblock heading %}
 {% block content %}
-
+    {% load static %}
+    <script src="{% static 'wyniki/js/jquery.bootstrap.modal.forms.min.js' %}"></script>
     <table class="table is-hoverable">
+
         <thead>
         <tr>
             <th><abbr title="Nazwa">Nazwisko i imię</abbr></th>
@@ -22,7 +24,10 @@
                         {% if obj.result.value != None %}
                             {{ obj.result.value }}{{ obj.result.sport.unit }}
                         {% else %}
-                            <button class="btn btn-success">+</button>
+                            <button class="createResult btn btn-success"
+                                    data-id="{% url 'wyniki:results_create' student.student.id sport.id forloop.counter0 %}">
+                                +
+                            </button>
                         {% endif %}
                     </td>
                 {% endfor %}
@@ -30,4 +35,22 @@
         {% endfor %}
         </tbody>
     </table>
+
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".createResult").each(function () {
+                $(this).modalForm({formURL: $(this).data("id")})
+            });
+        });
+    </script>
+
 {% endblock content %}

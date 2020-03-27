@@ -1,9 +1,10 @@
-from django.shortcuts import render, redirect
+from bootstrap_modal_forms.generic import BSModalCreateView
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
-from wyniki.forms import StudentFormSet, ClassForm
+from wyniki.forms import StudentFormSet, ClassForm, ResultForm
 from wyniki.models import Class, Student, Sport, Result
 
 
@@ -111,7 +112,7 @@ def get_results_for_class(request, class_id, sport_id):
     return render(request, "wyniki/class_results.html", context)
 
 
-def get_sports_details_for_class(request, pk):
+def get_sports_details_by_class(request, pk):
     clazz = Class.objects.get(pk=pk)
     sports = Sport.objects.all()
     # TODO Add results counting here
@@ -121,6 +122,36 @@ def get_sports_details_for_class(request, pk):
         "sports": sports
     }
     return render(request, "wyniki/class_sports_details.html", context)
+
+
+def get_students_by_class(request, pk):
+    clazz = Class.objects.get(pk=pk)
+    students = Student.objects.filter(clazz=clazz)
+
+    context = {
+        "clazz": clazz,
+        "students": students
+    }
+    return render(request, "wyniki/class_students.html", context)
+
+
+class ResultCreate(BSModalCreateView):
+    template_name = "wyniki/result_create.html"
+    form_class = ResultForm
+    success_message = 'Ok!'
+    success_url = reverse_lazy('wyniki:index')
+
+    def get_context_data(self, **kwargs):
+        kwargs["student"] = get_object_or_404(Student, pk=self.kwargs["student_id"])
+        kwargs["sport"] = get_object_or_404(Sport, pk=self.kwargs["sport_id"])
+        kwargs["group"] = Result.GROUP_CHOICES[int(self.kwargs["group_id"])]
+        return super().get_context_data(**kwargs)
+
+    def form_valid(self, form):
+        form.instance.student = get_object_or_404(Student, pk=self.kwargs["student_id"])
+        form.instance.sport = get_object_or_404(Sport, pk=self.kwargs["sport_id"])
+        form.instance.group = Result.GROUP_CHOICES[self.kwargs["group_id"]][0]
+        return super().form_valid(form)
 
 
 class SportCreate(CreateView):

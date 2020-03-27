@@ -177,3 +177,28 @@ class SportDetailsTests(TestCase):
         self.assertEquals(response.status_code, 200)
         self.assertEquals(response.context["clazz"], clazz)
         self.assertEquals(response.context["sports"].count(), 1)
+
+
+class StudentsByClassTests(TestCase):
+    def test_get_students_by_class(self):
+        clazz = Class.objects.create(name="Ia", year=2019)
+        Student.objects.create(first_name=studentA_first_name, last_name=studentA_last_name, clazz=clazz)
+        Student.objects.create(first_name=studentB_first_name, last_name=studentB_last_name, clazz=clazz)
+        response = self.client.get(reverse("wyniki:classes_students", args=(clazz.id,)))
+        self.assertEquals(response.status_code, 200)
+        self.assertEquals(response.context["clazz"], clazz)
+        self.assertEquals(response.context["students"].count(), 2)
+
+
+class CreateResultsTests(TestCase):
+
+    def test_create_result_ok(self):
+        value = 1.25
+        clazz = Class.objects.create(name="Ia", year=2019)
+        student = Student.objects.create(first_name=studentA_first_name, last_name=studentA_last_name, clazz=clazz)
+        sport = Sport.objects.create(name="sample")
+        self.client.post(reverse("wyniki:results_create", args=(student.id, sport.id, 0)), {"value": value})
+        result = Result.objects.get()
+        self.assertEquals(result.student, student)
+        self.assertEquals(result.sport, sport)
+        self.assertEquals(result.value, value)

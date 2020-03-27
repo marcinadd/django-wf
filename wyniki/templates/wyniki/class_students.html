@@ -1,0 +1,19 @@
+{% extends 'template.html' %}
+{% block title %}Uczniowie dla klasy {{ clazz }}{% endblock title %}
+
+{% block heading %}Klasa {{ clazz }} uczniowie {% endblock heading %}
+{% block content %}
+    <h1>{{ clazz }}</h1>
+    <button class="btn btn-success">Dodaj ucznia</button>
+    <ul>
+        {% for student in students %}
+            <li>
+                {{ student.last_name }} {{ student.first_name }}
+                <button class="btn btn-warning">Edytuj</button>
+                <button class="btn btn-danger">Usuń</button>
+            </li>
+        {% empty %}
+            <li>Nie znalaziono żadnego ucznia</li>
+        {% endfor %}
+    </ul>
+{% endblock content %}
