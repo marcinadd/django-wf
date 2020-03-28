@@ -22,7 +22,9 @@
                 {% for obj in student.results %}
                     <td>
                         {% if obj.result.value != None %}
-                            {{ obj.result.value }}{{ obj.result.sport.unit }}
+                            <a href="#" class="updateResult" data-id="{% url 'wyniki:results_update'  obj.result.id %}">
+                                {{ obj.result.value }}{{ obj.result.sport.unit }}
+                            </a>
                         {% else %}
                             <button class="createResult btn btn-success"
                                     data-id="{% url 'wyniki:results_create' student.student.id sport.id forloop.counter0 %}">
@@ -50,6 +52,10 @@
             $(".createResult").each(function () {
                 $(this).modalForm({formURL: $(this).data("id")})
             });
+            $(".updateResult").each(function () {
+                $(this).modalForm({formURL: $(this).data("id")})
+            });
+
         });
     </script>
 

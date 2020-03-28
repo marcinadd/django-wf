@@ -151,7 +151,7 @@ class ClassWithStudentsTests(TestCase):
 
 class ClassResultsTests(TestCase):
     def test_results_for_class_with_exists(self):
-        clazz = Class.objects.create(name="Ia", year=2019)
+        clazz = Class.objects.create(name="Ia", year=2020)
         studentA = Student.objects.create(first_name=studentA_first_name, last_name=studentA_last_name, clazz=clazz)
         studentB = Student.objects.create(first_name=studentB_first_name, last_name=studentB_last_name, clazz=clazz)
         sport = Sport.objects.create(name="sample")
@@ -190,8 +190,7 @@ class StudentsByClassTests(TestCase):
         self.assertEquals(response.context["students"].count(), 2)
 
 
-class CreateResultsTests(TestCase):
-
+class CreateResultTests(TestCase):
     def test_create_result_ok(self):
         value = 1.25
         clazz = Class.objects.create(name="Ia", year=2019)
@@ -202,3 +201,27 @@ class CreateResultsTests(TestCase):
         self.assertEquals(result.student, student)
         self.assertEquals(result.sport, sport)
         self.assertEquals(result.value, value)
+
+
+def create_sample_result():
+    value = 1.25
+    clazz = Class.objects.create(name="Ia", year=2019)
+    student = Student.objects.create(first_name=studentA_first_name, last_name=studentA_last_name, clazz=clazz)
+    sport = Sport.objects.create(name="sample")
+    return Result.objects.create(value=value, student=student, sport=sport, group=Result.FIRST)
+
+
+class UpdateResultTests(TestCase):
+    def test_update_result_ok(self):
+        result = create_sample_result()
+        response = self.client.post(reverse("wyniki:results_update", args=(result.id,)), {"value": 1.5})
+        self.assertEquals(response.status_code, 302)
+        self.assertEquals(Result.objects.get(id=result.id).value, 1.5)
+
+
+class DeleteResultTests(TestCase):
+    def test_delete_result_ok(self):
+        result = create_sample_result()
+        response = self.client.post(reverse("wyniki:results_delete", args=(result.id,)))
+        self.assertEquals(response.status_code, 302)
+        self.assertEquals(Result.objects.all().count(), 0)

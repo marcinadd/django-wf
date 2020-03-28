@@ -1,6 +1,6 @@
-from bootstrap_modal_forms.generic import BSModalCreateView
+from bootstrap_modal_forms.generic import BSModalCreateView, BSModalUpdateView
 from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
@@ -152,6 +152,38 @@ class ResultCreate(BSModalCreateView):
         form.instance.sport = get_object_or_404(Sport, pk=self.kwargs["sport_id"])
         form.instance.group = Result.GROUP_CHOICES[self.kwargs["group_id"]][0]
         return super().form_valid(form)
+
+    def get_success_url(self):
+        class_id = self.object.student.clazz.id
+        sport_id = self.object.sport.id
+        return reverse("wyniki:classes_results", args=(class_id, sport_id))
+
+
+class ResultUpdate(BSModalUpdateView):
+    template_name = "wyniki/result_update.html"
+    form_class = ResultForm
+    model = Result
+    success_message = 'Ok!'
+
+    def get_success_url(self):
+        class_id = self.object.student.clazz.id
+        sport_id = self.object.sport.id
+        return reverse("wyniki:classes_results", args=(class_id, sport_id))
+
+
+class ResultDelete(DeleteView):
+    model = Result
+    success_url = reverse_lazy('author-list')
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        return super(ResultDelete, self).delete(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
+
+    def get_success_url(self):
+        return reverse("wyniki:classes_results", args=(self.object.student.clazz.id, self.object.sport.id))
 
 
 class SportCreate(CreateView):

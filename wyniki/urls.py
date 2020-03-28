@@ -24,5 +24,8 @@ urlpatterns = [
     path("sports/create", views.SportCreate.as_view(), name="sports_create"),
 
     path("students/<int:student_id>/sports/<int:sport_id>/groups/<int:group_id>", views.ResultCreate.as_view(),
-         name="results_create")
+         name="results_create"),
+
+    path("results/update/<int:pk>", views.ResultUpdate.as_view(), name="results_update"),
+    path("results/delete/<int:pk>", views.ResultDelete.as_view(), name="results_delete")
 ]
