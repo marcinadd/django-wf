@@ -1,0 +1,23 @@
+{% extends 'template.html' %}
+{% block title %}Sporty{% endblock title %}
+
+{% block heading %}Lista sportów:{% endblock heading %}
+{% block content %}
+    <h1>Sporty</h1>
+    <a href="{% url 'wyniki:sports_create' %}">
+        <button>Dodaj sport</button>
+    </a>
+    <ul>
+        {% for sport in object_list %}
+            <li>{{ sport.name }}</li>
+            <a href="{% url 'wyniki:sports_update' sport.id %}">
+                <button>Edytuj</button>
+            </a>
+            <a href="{% url 'wyniki:sports_delete' sport.id %}">
+                <button>Usuń</button>
+            </a>
+        {% empty %}
+            <li>Nie znalaziono żadnego sportu</li>
+        {% endfor %}
+    </ul>
+{% endblock content %}

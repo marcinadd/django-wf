@@ -4,7 +4,7 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
-from wyniki.forms import StudentFormSet, ClassForm, ResultForm, StudentForm
+from wyniki.forms import StudentFormSet, ClassForm, ResultForm, StudentForm, SportForm
 from wyniki.models import Class, Student, Sport, Result
 
 
@@ -181,5 +181,20 @@ class ResultDelete(DeleteView):
 
 class SportCreate(CreateView):
     model = Sport
-    fields = ["name", "unit", "more_better"]
-    success_url = reverse_lazy("wyniki:index")
+    form_class = SportForm
+    success_url = reverse_lazy("wyniki:sports_list")
+
+
+class SportList(ListView):
+    model = Sport
+
+
+class SportUpdate(UpdateView):
+    model = Sport
+    form_class = SportForm
+    success_url = reverse_lazy("wyniki:sports_list")
+
+
+class SportDelete(DeleteView):
+    model = Sport
+    success_url = reverse_lazy("wyniki:sports_list")

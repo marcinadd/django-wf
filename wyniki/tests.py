@@ -163,7 +163,7 @@ class SportDetailsTests(TestCase):
     def test_get_details_for_specified_class(self):
         clazz = Class.objects.create(name="Ia", year=2019)
         sport = Sport.objects.create(name="sample")
-        response = self.client.get(reverse("wyniki:sports_list", args=[clazz.id, ]))
+        response = self.client.get(reverse("wyniki:classes_sports", args=[clazz.id, ]))
         self.assertEquals(response.status_code, 200)
         self.assertEquals(response.context["clazz"], clazz)
         self.assertEquals(response.context["sports"].count(), 1)
@@ -215,3 +215,32 @@ class DeleteResultTests(TestCase):
         response = self.client.post(reverse("wyniki:results_delete", args=(result.id,)))
         self.assertEquals(response.status_code, 302)
         self.assertEquals(Result.objects.all().count(), 0)
+
+
+class SportListTests(TestCase):
+    def test_list_ok(self):
+        Sport.objects.create(name="sampleA", unit="m", more_better=True)
+        Sport.objects.create(name="sampleB", unit="m", more_better=False)
+        response = self.client.get(reverse("wyniki:sports_list"))
+        self.assertEquals(response.status_code, 200)
+        self.assertEquals(response.context["object_list"].count(), 2)
+
+
+class SportUpdateTests(TestCase):
+    def test_update_ok(self):
+        sport = Sport.objects.create(name="sampleA", unit="m", more_better=True)
+        response = self.client.post(reverse("wyniki:sports_update", args=(sport.id,)),
+                                    {"name": "updated", "more_better": "False", "unit": "kg"})
+        sport.refresh_from_db()
+        self.assertEquals(response.status_code, 302)
+        self.assertEquals(sport.name, "updated")
+        self.assertEquals(sport.unit, "kg")
+        self.assertEquals(sport.more_better, False)
+
+
+class SportDeleteTests(TestCase):
+    def test_delete_ok(self):
+        sport = Sport.objects.create(name="sampleA", unit="m", more_better=True)
+        response = self.client.post(reverse("wyniki:sports_delete", args=(sport.id,)))
+        self.assertEquals(response.status_code, 302)
+        self.assertEquals(Sport.objects.all().count(), 0)
