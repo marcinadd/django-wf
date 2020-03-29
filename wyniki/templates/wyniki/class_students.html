@@ -9,7 +9,9 @@
         {% for student in students %}
             <li>
                 {{ student.last_name }} {{ student.first_name }}
-                <button class="btn btn-warning">Edytuj</button>
+                <a href="{% url "wyniki:students_update" student.id %}">
+                    <button class="btn btn-warning">Edytuj</button>
+                </a>
                 <button class="btn btn-danger">Usuń</button>
             </li>
         {% empty %}

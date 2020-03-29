@@ -12,17 +12,17 @@
     <form class="form-horizontal" method="POST" action="" id="myForm">
         {% csrf_token %}
         {{ class_form.as_p }}
+
         {% for form in formset %}
             <div class="row form-row spacer" id="student_0">
-                <div>
-                    {{ form.first_name }}
-                    {{ form.last_name }}
+                <div class="form-group">
+                    {{ form }}
                 </div>
             </div>
         {% endfor %}
         <div class="row spacer">
             <div class="col-4 offset-2">
-                <button type="submit" class="btn btn-block btn-primary">Create</button>
+                <button type="submit" class="btn btn-block btn-sucess">Dodaj</button>
             </div>
         </div>
         {{ formset.management_form }}
@@ -35,7 +35,10 @@
 
     <script type="text/javascript">
         $(function () {
-            $('#myForm .form-row div').formset();
+            $('#myForm .form-row div').formset({
+                addText: '<button class="btn btn-success">+</button>',
+                deleteText: '<button class="btn btn-danger">-</button>'
+            });
         })
     </script>
 {% endblock content %}

@@ -11,16 +11,6 @@ studentB_first_name = "Adam"
 studentB_last_name = "Brown"
 
 
-class ClassCreateTests(TestCase):
-    def test_create_class(self):
-        clazz = {"name": "Ia", "year": "2019"}
-        response = self.client.post(reverse("wyniki:classes_create"), clazz)
-        saved = Class.objects.last()
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(saved.name, clazz.get("name"))
-        self.assertEqual(saved.year, int(clazz.get("year")))
-
-
 class ClassListTests(TestCase):
     def test_get_classes_when_no_classes(self):
         response = self.client.get(reverse("wyniki:classes_list"))
@@ -122,7 +112,7 @@ class StudentUpdateTests(TestCase):
 
 class ClassWithStudentsTests(TestCase):
     def test_get_class_students_create(self):
-        response = self.client.get(reverse("wyniki:classes_create_students"))
+        response = self.client.get(reverse("wyniki:classes_create"))
         self.assertEqual(response.status_code, 200)
         self.assertIsNotNone(response.context["formset"])
         self.assertIsNotNone(response.context["class_form"])
@@ -138,7 +128,7 @@ class ClassWithStudentsTests(TestCase):
             'form-TOTAL_FORMS': "2",
             'form-INITIAL_FORMS': "0"
         }
-        response = self.client.post(reverse("wyniki:classes_create_students"), form_data)
+        response = self.client.post(reverse("wyniki:classes_create"), form_data)
         self.assertEquals(response.status_code, 302)
         self.assertEquals(Class.objects.all().count(), 1)
         studentA = Student.objects.get(first_name=studentA_first_name)

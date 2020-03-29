@@ -11,6 +11,7 @@
             <th>Rok:</th>
             <th>Wyniki:</th>
             <th>Uczniowie:</th>
+            <th>Edytuj:</th>
         </tr>
         <tbody>
         {% for clazz in object_list %}
@@ -19,14 +20,19 @@
                 <td>{{ clazz.name }}</td>
                 <td>{{ clazz.year }}</td>
                 <td>
-                    <button type="button" class="btn btn-primary">
-                        <a href="{% url 'wyniki:sports_list' clazz.id %}">Wyniki</a>
-                    </button>
+                    <a href="{% url 'wyniki:sports_list' clazz.id %}">
+                        <button type="button" class="btn btn-primary">Wyniki</button>
+                    </a>
                 </td>
                 <td>
-                    <button type="button" class="btn btn-success">
-                        <a href="{% url 'wyniki:classes_students' clazz.id %}">Uczniowie</a>
-                    </button>
+                    <a href="{% url 'wyniki:classes_students' clazz.id %}">
+                        <button type="button" class="btn btn-success">Uczniowie</button>
+                    </a>
+                </td>
+                <td>
+                    <a href="{% url 'wyniki:classes_update' clazz.id %}">
+                        <button type="button" class="btn btn-success">Edytuj</button>
+                    </a>
                 </td>
             </tr>
         {% empty %}

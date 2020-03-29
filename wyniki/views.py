@@ -4,19 +4,12 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
-from wyniki.forms import StudentFormSet, ClassForm, ResultForm
+from wyniki.forms import StudentFormSet, ClassForm, ResultForm, StudentForm
 from wyniki.models import Class, Student, Sport, Result
 
 
 def index(request):
     return render(request, 'wyniki/index.html')
-
-
-class ClassCreate(CreateView):
-    model = Class
-    fields = ["name", "year"]
-    success_url = reverse_lazy("wyniki:index")
-
 
 class ClassList(ListView):
     model = Class
@@ -38,7 +31,7 @@ class ClassUpdate(UpdateView):
 
 class StudentCreate(CreateView):
     model = Student
-    fields = ["first_name", "last_name", "clazz"]
+    form_class = StudentForm
     success_url = reverse_lazy("wyniki:index")
 
 
@@ -56,7 +49,7 @@ class StudentDelete(DeleteView):
 
 class StudentUpdate(UpdateView):
     model = Student
-    fields = ["first_name", "last_name", "clazz"]
+    form_class = StudentForm
     success_url = reverse_lazy("wyniki:index")
 
 
@@ -79,7 +72,7 @@ def create_class_with_students(request):
         "formset": formset,
         "class_form": class_form
     }
-    return render(request, "wyniki/class_students_add.html", context)
+    return render(request, "wyniki/class_create.html", context)
 
 
 def get_results_for_class(request, class_id, sport_id):
