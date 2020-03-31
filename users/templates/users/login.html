@@ -1,0 +1,19 @@
+{% extends 'template.html' %}
+{% block title %}Logowanie{% endblock title %}
+
+{% block heading %}Logowanie{% endblock heading %}
+{% block content %}
+    {% load socialaccount %}
+
+    {% if request.GET.err_domain %}
+        <div class="alert alert-danger" role="alert">
+            Aby się zalogować użyj konta w domenie lo1.sandomierz.pl
+        </div>
+    {% endif %}
+
+    {% if user.is_authenticated %}
+        <p>Jesteś już zalogowany</p>
+    {% else %}
+        <a href="{% provider_login_url 'google' %}">Zaloguj się za pomocą Google</a>
+    {% endif %}
+{% endblock content %}
