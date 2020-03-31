@@ -3,13 +3,16 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
+from stronghold.decorators import public
 
 from wyniki.forms import StudentFormSet, ClassForm, ResultForm, StudentForm, SportForm
 from wyniki.models import Class, Student, Sport, Result
 
 
+@public
 def index(request):
     return render(request, 'wyniki/index.html')
+
 
 class ClassList(ListView):
     model = Class
@@ -95,11 +98,18 @@ def get_results_for_class(request, class_id, sport_id):
             result = student_result.get(student)
             obj["results"].append({"group": group, "result": result})
 
+    best_results_set = Result.objects.filter(sport=sport).order_by("-value" if sport.more_better else "value")
+    best_results_class_set = Result.objects.filter(sport=sport, student__clazz=clazz).order_by(
+        "-value" if sport.more_better else "value")
+
+
     context = {
         "presentation": presentation,
         "groups": groups,
         "clazz": clazz,
-        "sport": sport
+        "sport": sport,
+        "best_result": best_results_set[0] if len(best_results_set) > 0 else None,
+        "best_result_class": best_results_class_set[0] if len(best_results_class_set) > 0 else None
     }
 
     return render(request, "wyniki/class_results.html", context)
@@ -108,7 +118,6 @@ def get_results_for_class(request, class_id, sport_id):
 def get_sports_details_by_class(request, pk):
     clazz = Class.objects.get(pk=pk)
     sports = Sport.objects.all()
-    # TODO Add results counting here
 
     context = {
         "clazz": clazz,
@@ -193,7 +202,6 @@ class SportUpdate(UpdateView):
     model = Sport
     form_class = SportForm
     success_url = reverse_lazy("wyniki:sports_list")
-
 
 class SportDelete(DeleteView):
     model = Sport

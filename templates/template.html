@@ -33,6 +33,7 @@
             Strona główna
         </a>
 
+        {% if user.is_staff %}
         <div class="navbar-item has-dropdown is-hoverable">
             <a class="navbar-link">
                 Klasy
@@ -79,6 +80,7 @@
             </div>
         </div>
     </div>
+        {% endif %}
 
     {% if not user.is_authenticated %}
         <div class="buttons register_button">

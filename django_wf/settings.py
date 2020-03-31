@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'bootstrap_modal_forms',
+    'stronghold',
 ]
 
 MIDDLEWARE = [
@@ -53,6 +54,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'stronghold.middleware.LoginRequiredMiddleware',
 ]
 
 ROOT_URLCONF = 'django_wf.urls'
@@ -128,8 +130,10 @@ AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
 )
 
+# Auth
 SITE_ID = 1
 LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = "/users/login"
 
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
@@ -146,3 +150,12 @@ SOCIALACCOUNT_PROVIDERS = {
 SOCIALACCOUNT_QUERY_EMAIL = True
 SOCIALACCOUNT_ADAPTER = "users.models.CustomSocialAccountAdapter"
 LOGOUT_REDIRECT_URL = "/"
+
+STRONGHOLD_USER_TEST_FUNC = lambda user: user.is_staff
+
+STRONGHOLD_PUBLIC_URLS = (
+    r"^/admin.*?$",
+    r"^/accounts/login/$",
+    r"^/accounts/google.*?$",
+    r"^/accounts/social/signup/$",
+)
