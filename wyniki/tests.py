@@ -1,4 +1,5 @@
 # Create your tests here.
+from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
 
@@ -11,7 +12,20 @@ studentB_first_name = "Adam"
 studentB_last_name = "Brown"
 
 
-class ClassListTests(TestCase):
+class IndexTests(TestCase):
+    def test_index_without_auth_ok(self):
+        response = self.client.get(reverse("wyniki:index"))
+        self.assertEquals(response.status_code, 200)
+
+
+class SuperUserTestCase(TestCase):
+
+    def setUp(self):
+        User.objects.create_superuser(username='superuser', password='password')
+        self.client.login(username='superuser', password='password')
+
+
+class ClassListTests(SuperUserTestCase):
     def test_get_classes_when_no_classes(self):
         response = self.client.get(reverse("wyniki:classes_list"))
         self.assertEqual(response.status_code, 200)
@@ -28,7 +42,7 @@ class ClassListTests(TestCase):
                                  ordered=False)
 
 
-class ClassDeleteTests(TestCase):
+class ClassDeleteTests(SuperUserTestCase):
     def test_delete_class_which_exists(self):
         clazz = Class(name="Ia", year=2019)
         clazz.save()
@@ -37,7 +51,7 @@ class ClassDeleteTests(TestCase):
         self.assertEqual(Class.objects.all().count(), 0)
 
 
-class ClassUpdateTests(TestCase):
+class ClassUpdateTests(SuperUserTestCase):
     def test_update_class_which_exists(self):
         clazz = Class(name="Ia", year=2019)
         clazz.save()
@@ -49,7 +63,7 @@ class ClassUpdateTests(TestCase):
         self.assertEqual(clazz.year, int(updated.get("year")))
 
 
-class StudentCreateTests(TestCase):
+class StudentCreateTests(SuperUserTestCase):
     def test_create_student(self):
         clazz = Class(name="Ia", year=2020)
         clazz.save()
@@ -62,7 +76,7 @@ class StudentCreateTests(TestCase):
         self.assertEqual(saved.clazz, clazz)
 
 
-class StudentListTests(TestCase):
+class StudentListTests(SuperUserTestCase):
     def test_get_students_when_no_students(self):
         response = self.client.get(reverse("wyniki:students_list"))
         self.assertEqual(response.status_code, 200)
@@ -84,7 +98,7 @@ class StudentListTests(TestCase):
                                  ordered=False)
 
 
-class StudentDeleteTests(TestCase):
+class StudentDeleteTests(SuperUserTestCase):
     def test_delete_student_which_exists(self):
         student = Student(first_name=studentA_first_name, last_name=studentA_last_name)
         student.save()
@@ -93,7 +107,7 @@ class StudentDeleteTests(TestCase):
         self.assertEqual(Student.objects.all().count(), 0)
 
 
-class StudentUpdateTests(TestCase):
+class StudentUpdateTests(SuperUserTestCase):
     def test_update_student_which_exists(self):
         clazzA = Class(name="Ia", year=2019)
         clazzA.save()
@@ -110,7 +124,7 @@ class StudentUpdateTests(TestCase):
         self.assertEqual(student.clazz, clazzB)
 
 
-class ClassWithStudentsTests(TestCase):
+class ClassWithStudentsTests(SuperUserTestCase):
     def test_get_class_students_create(self):
         response = self.client.get(reverse("wyniki:classes_create"))
         self.assertEqual(response.status_code, 200)
@@ -139,7 +153,7 @@ class ClassWithStudentsTests(TestCase):
         self.assertEquals(clazz.year, 2020)
 
 
-class ClassResultsTests(TestCase):
+class ClassResultsTests(SuperUserTestCase):
     def test_results_for_class_with_exists(self):
         clazz = Class.objects.create(name="Ia", year=2020)
         studentA = Student.objects.create(first_name=studentA_first_name, last_name=studentA_last_name, clazz=clazz)
@@ -159,7 +173,7 @@ class ClassResultsTests(TestCase):
         self.assertIsNotNone(response.context["sport"])
 
 
-class SportDetailsTests(TestCase):
+class SportDetailsTests(SuperUserTestCase):
     def test_get_details_for_specified_class(self):
         clazz = Class.objects.create(name="Ia", year=2019)
         sport = Sport.objects.create(name="sample")
@@ -169,7 +183,7 @@ class SportDetailsTests(TestCase):
         self.assertEquals(response.context["sports"].count(), 1)
 
 
-class StudentsByClassTests(TestCase):
+class StudentsByClassTests(SuperUserTestCase):
     def test_get_students_by_class(self):
         clazz = Class.objects.create(name="Ia", year=2019)
         Student.objects.create(first_name=studentA_first_name, last_name=studentA_last_name, clazz=clazz)
@@ -180,7 +194,7 @@ class StudentsByClassTests(TestCase):
         self.assertEquals(response.context["students"].count(), 2)
 
 
-class CreateResultTests(TestCase):
+class CreateResultTests(SuperUserTestCase):
     def test_create_result_ok(self):
         value = 1.25
         clazz = Class.objects.create(name="Ia", year=2019)
@@ -201,7 +215,7 @@ def create_sample_result():
     return Result.objects.create(value=value, student=student, sport=sport, group=Result.FIRST)
 
 
-class UpdateResultTests(TestCase):
+class UpdateResultTests(SuperUserTestCase):
     def test_update_result_ok(self):
         result = create_sample_result()
         response = self.client.post(reverse("wyniki:results_update", args=(result.id,)), {"value": 1.5})
@@ -209,7 +223,7 @@ class UpdateResultTests(TestCase):
         self.assertEquals(Result.objects.get(id=result.id).value, 1.5)
 
 
-class DeleteResultTests(TestCase):
+class DeleteResultTests(SuperUserTestCase):
     def test_delete_result_ok(self):
         result = create_sample_result()
         response = self.client.post(reverse("wyniki:results_delete", args=(result.id,)))
@@ -217,7 +231,7 @@ class DeleteResultTests(TestCase):
         self.assertEquals(Result.objects.all().count(), 0)
 
 
-class SportListTests(TestCase):
+class SportListTests(SuperUserTestCase):
     def test_list_ok(self):
         Sport.objects.create(name="sampleA", unit="m", more_better=True)
         Sport.objects.create(name="sampleB", unit="m", more_better=False)
@@ -226,7 +240,7 @@ class SportListTests(TestCase):
         self.assertEquals(response.context["object_list"].count(), 2)
 
 
-class SportUpdateTests(TestCase):
+class SportUpdateTests(SuperUserTestCase):
     def test_update_ok(self):
         sport = Sport.objects.create(name="sampleA", unit="m", more_better=True)
         response = self.client.post(reverse("wyniki:sports_update", args=(sport.id,)),
@@ -238,7 +252,7 @@ class SportUpdateTests(TestCase):
         self.assertEquals(sport.more_better, False)
 
 
-class SportDeleteTests(TestCase):
+class SportDeleteTests(SuperUserTestCase):
     def test_delete_ok(self):
         sport = Sport.objects.create(name="sampleA", unit="m", more_better=True)
         response = self.client.post(reverse("wyniki:sports_delete", args=(sport.id,)))
