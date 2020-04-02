@@ -154,19 +154,19 @@ class ClassWithStudentsTests(SuperUserTestCase):
 
 
 class ClassResultsTests(SuperUserTestCase):
-    def test_results_for_class_with_exists(self):
+    def test_results_for_class_which_exists(self):
         clazz = Class.objects.create(name="Ia", year=2020)
         studentA = Student.objects.create(first_name=studentA_first_name, last_name=studentA_last_name, clazz=clazz)
         studentB = Student.objects.create(first_name=studentB_first_name, last_name=studentB_last_name, clazz=clazz)
         sport = Sport.objects.create(name="sample")
-        resultA = Result.objects.create(value=3.5, sport=sport, student=studentA, group=Result.FIRST)
-        resultB = Result.objects.create(value=4.5, sport=sport, student=studentB, group=Result.FIRST)
-        resultC = Result.objects.create(value=5.5, sport=sport, student=studentB, group=Result.SECOND)
+        Result.objects.create(value=3.5, sport=sport, student=studentA, group=Result.FIRST)
+        Result.objects.create(value=4.5, sport=sport, student=studentB, group=Result.FIRST)
+        Result.objects.create(value=5.5, sport=sport, student=studentB, group=Result.SECOND)
         response = self.client.get(reverse("wyniki:classes_results", args=(clazz.id, sport.id,)))
         self.assertEquals(response.status_code, 200)
-        self.assertContains(response, resultA.value)
-        self.assertContains(response, resultB.value)
-        self.assertContains(response, resultC.value)
+        self.assertContains(response, "3,5")
+        self.assertContains(response, "4,5")
+        self.assertContains(response, "5,5")
         self.assertIsNotNone(response.context["presentation"])
         self.assertIsNotNone(response.context["groups"])
         self.assertIsNotNone(response.context["clazz"])
