@@ -14,6 +14,13 @@
     {% if user.is_authenticated %}
         <p>Jesteś już zalogowany</p>
     {% else %}
-        <a href="{% provider_login_url 'google' %}">Zaloguj się za pomocą Google</a>
+        <div class="row">
+          <div class="col-md-3">
+            <a class="btn btn-outline-dark" href="{% provider_login_url 'google' %}" role="button" style="text-transform:none">
+              <img width="20px" style="margin-bottom:3px; margin-right:5px" alt="Google sign-in" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" /> <!-- sprawdź czy działa pod tą ścieżką bo nie mma jak sprawdzić src="{% static 'users/js/sign_in.svg' %}" -->
+              Sign in with Google
+            </a>
+          </div>
+        </div>
     {% endif %}
 {% endblock content %}
