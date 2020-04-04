@@ -1,44 +1,49 @@
 {% extends 'template.html' %}
 {% block title %}Klasy{% endblock title %}
-
-{% block heading %}Klasy{% endblock heading %}
+{% block heading %}Lista klas:{% endblock heading %}
+{% block menuclass2 %} active-custom{% endblock menuclass2 %}
 {% block content %}
-    <table class="table is-hoverable">
-        <thead>
-        <tr>
-            <th><abbr title="ID klasy">ID</abbr></th>
-            <th>Nazwa klasy:</th>
-            <th>Rok:</th>
-            <th>Wyniki:</th>
-            <th>Uczniowie:</th>
-            <th>Edytuj:</th>
-        </tr>
-        <tbody>
-        {% for clazz in object_list %}
+    {% if object_list %}
+        <table class="table table-striped">
+            <thead class="thead-dark">
             <tr>
-                <th>{{ clazz.pk }}</th>
-                <td>{{ clazz.name }}</td>
-                <td>{{ clazz.year }}</td>
-                <td>
-                    <a href="{% url 'wyniki:classes_sports' clazz.id %}">
-                        <button type="button" class="btn btn-primary">Wyniki</button>
-                    </a>
-                </td>
-                <td>
-                    <a href="{% url 'wyniki:classes_students' clazz.id %}">
-                        <button type="button" class="btn btn-success">Uczniowie</button>
-                    </a>
-                </td>
-                <td>
-                    <a href="{% url 'wyniki:classes_update' clazz.id %}">
-                        <button type="button" class="btn btn-success">Edytuj</button>
-                    </a>
-                </td>
+                <th class="text-center" scope="col">ID</th>
+                <th class="text-center" scope="col">Nazwa klasy</th>
+                <th class="text-center" scope="col">Rok</th>
+                <th class="text-center" scope="col">Wyniki</th>
+                <th class="text-center" scope="col">Uczniowie</th>
+                <th class="text-center" scope="col">Edytuj</th>
             </tr>
-        {% empty %}
-            <p>Nie znalaziono żadnej klasy</p>
-        {% endfor %}
-        </tbody>
-        </thead>
-    </table>
+            </thead>
+            <tbody>
+            {% for clazz in object_list %}
+                <tr>
+                    <th class="text-center">{{ clazz.pk }}</th>
+                    <td class="text-center">{{ clazz.name }}</td>
+                    <td class="text-center">{{ clazz.year }}</td>
+                    <td class="text-center">
+                        <a href="{% url 'wyniki:classes_sports' clazz.id %}">
+                            <button type="button" class="btn btn-custom">Wyniki</button>
+                        </a>
+                    </td>
+                    <td class="text-center">
+                        <a href="{% url 'wyniki:classes_students' clazz.id %}">
+                            <button type="button" class="btn btn-custom">Uczniowie</button>
+                        </a>
+                    </td>
+                    <td class="text-center">
+                        <a href="{% url 'wyniki:classes_update' clazz.id %}">
+                            <button type="button" class="btn btn-custom">Edytuj</button>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>W naszej bazie danych nie ma żadnych klas!</p>
+        <a href="{% url 'wyniki:classes_create' %}">
+            <button type="button" class="btn btn-custom">Dodaj klasę</button>
+        </a>
+    {% endif %}
 {% endblock content %}

@@ -1,21 +1,46 @@
 {% extends 'template.html' %}
-{% block title %}Uczniowie dla klasy {{ clazz }}{% endblock title %}
+{% block title %}Klasa {{ clazz }}{% endblock title %}
 
-{% block heading %}Klasa {{ clazz }} uczniowie {% endblock heading %}
+{% block heading %}Uczniowie klasy {{ clazz }}{% endblock heading %}
+{% block menuclass3 %} active-custom{% endblock menuclass3 %}
 {% block content %}
-    <h1>{{ clazz }}</h1>
-    <button class="btn btn-success">Dodaj ucznia</button>
-    <ul>
-        {% for student in students %}
-            <li>
-                {{ student.last_name }} {{ student.first_name }}
-                <a href="{% url "wyniki:students_update" student.id %}">
-                    <button class="btn btn-warning">Edytuj</button>
-                </a>
-                <button class="btn btn-danger">Usuń</button>
-            </li>
-        {% empty %}
-            <li>Nie znalaziono żadnego ucznia</li>
-        {% endfor %}
-    </ul>
+    {% if students %}
+        <table class="table table-striped">
+            <thead class="thead-dark">
+            <tr>
+                <th class="text-center" scope="col">ID</th>
+                <th class="text-center" scope="col">Imię</th>
+                <th class="text-center" scope="col">Nazwisko</th>
+                <th class="text-center" scope="col">Klasa</th>
+                <th class="text-center" scope="col">Edytuj</th>
+                <th class="text-center" scope="col">Usuń</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for student in students.order_by %}
+                <tr>
+                    <th class="text-center">{{ student.pk }}</th>
+                    <td class="text-center">{{ student.first_name }}</td>
+                    <td class="text-center">{{ student.last_name }}</td>
+                    <td class="text-center">{{ student.clazz }}</td>
+                    <td class="text-center">
+                        <a href="{% url "wyniki:students_update" student.id %}">
+                            <button class="btn btn-custom">Edytuj</button>
+                        </a>
+                    </td>
+                    <td class="text-center">
+                        <a href="{% url "wyniki:students_delete" student.id %}">
+                            <button class="btn btn-custom" style="background-color: #dc3545">Usuń</button>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>W naszej bazie danych nie ma żadnych uczniów dla tej klasy!</p>
+        <a href="{% url 'wyniki:students_create' %}">
+            <button type="button" class="btn btn-custom">Dodaj uczniów</button>
+        </a>
+    {% endif %}
 {% endblock content %}

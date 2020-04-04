@@ -1,7 +1,7 @@
 {% extends 'template.html' %}
 {% block title %}Edytuj klasę{% endblock title %}
-
 {% block heading %}Edytuj klasę{% endblock heading %}
+{% block menuclass2 %} active-custom{% endblock menuclass2 %}
 {% block content %}
     <form method="post">{% csrf_token %}
         <form method="POST" class="post-form">
