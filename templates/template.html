@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     {% load static %}
-    <link rel="stylesheet" href="{% static 'wyniki/style.css' %}">
+    <link rel="stylesheet" href="{% static 'wyniki/css/style.css' %}">
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
@@ -15,97 +15,96 @@
             crossorigin="anonymous"></script>
 </head>
 <body>
-<nav class="navbar is-dark" role="navigation" aria-label="main navigation">
-    <div class="navbar-brand">
-                <span style="font-size: 3em; color: white; padding-left: 10%">
-                    <i class="fas fa-dumbbell"></i>
-                </span>
-        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
-           data-target="navbarBasicExample">
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-        </a>
-    </div>
-
-    <div class="navbar-end">
-        <a class="navbar-item" href="{% url 'wyniki:index' %}">
-            Strona główna
-        </a>
-
-        {% if user.is_staff %}
-        <div class="navbar-item has-dropdown is-hoverable">
-            <a class="navbar-link">
-                Klasy
-            </a>
-
-            <div class="navbar-dropdown">
-                <a class="navbar-item" href="{% url 'wyniki:classes_list' %}">
-                    Pokaż klasy
-                </a>
-
-                <a class="navbar-item" href="{% url 'wyniki:classes_create' %}">
-                    Dodaj klasę
-                </a>
-            </div>
-        </div>
-
-        <div class="navbar-item has-dropdown is-hoverable">
-            <a class="navbar-link">
-                Uczniowie
-            </a>
-
-            <div class="navbar-dropdown">
-                <a class="navbar-item" href="{% url 'wyniki:students_list' %}">
-                    Pokaż listę uczniów
-                </a>
-
-                <a class="navbar-item" href="{% url 'wyniki:students_create' %}">
-                    Dodaj uczniów
-                </a>
-            </div>
-        </div>
-        <div class="navbar-item has-dropdown is-hoverable">
-            <a class="navbar-link">
-                Sporty
-            </a>
-
-            <div class="navbar-dropdown">
-                <a class="navbar-item" href="{% url 'wyniki:sports_create' %}">
-                    Dodaj sport
-                </a>
-                <a class="navbar-item" href="{% url 'wyniki:sports_list' %}">
-                    Lista
-                </a>
-            </div>
-        </div>
-    </div>
-        {% endif %}
-
-    {% if not user.is_authenticated %}
-        <div class="buttons register_button">
-            <a class="button is-primary" href="{% url 'users:login' %}">
-                Zaloguj się
-            </a>
-        </div>
-    {% else %}
-        <div class="buttons register_button">
-            <a class="button is-primary" href="{% url 'users:logout' %}">
-                {{ user.get_full_name }} Wyloguj się
-            </a>
-        </div>
-    {% endif %}
-</nav>
-
-<section class="section">
+<div class="bg-color">
     <div class="container">
-        <div class="content is-medium">
-            <h3 class="title is-3">{% block heading %}{% endblock heading %}</h3>
-            <div class="box">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-color" id="mainNav">
+            <span>
+                <a style="font-size: 1.7em; color: #fb9902;" href="{% url 'wyniki:index' %}"><i
+                        class="fas fa-dumbbell"></i></a>
+            </span>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                    aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link text-style" href="{% url 'wyniki:index' %}">Strona główna <span
+                                class="sr-only">(current)</span></a>
+                    </li>
+
+                    {% if user.is_staff %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-style" href="#" id="navbarDropdown" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Klasy
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{% url 'wyniki:classes_list' %}">Pokaż klasy</a>
+                                <a class="dropdown-item" href="{% url 'wyniki:classes_create' %}">Dodaj klasę</a>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-style" href="#" id="navbarDropdown" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Uczniowie
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{% url 'wyniki:students_list' %}">Pokaż listę uczniów</a>
+                                <a class="dropdown-item" href="{% url 'wyniki:students_create' %}">Dodaj uczniów</a>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-style" href="#" id="navbarDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Sporty
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{% url 'wyniki:sports_create' %}">Dodaj sport</a>
+                            <a class="dropdown-item" href="{% url 'wyniki:sports_list' %}">Lista</a>
+                        </div>
+                    {% endif %}
+
+                    {% if not user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link text-style active-custom" href="{% url 'users:login' %}">Zaloguj się</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link text-style active-custom"
+                               href="{% url 'users:logout' %}">{{ user.get_full_name }} Wyloguj się</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+    </div>
+</div>
+
+<hr>
+
+<header class="bg-primary text-white bg-header">
+    <div class="container text-center">
+        <h1 class="header-style1">Aplikacja</h1>
+        <h2 class="header-style2">Wyniki</h2>
+    </div>
+</header>
+
+<section class="content-style">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="header-style2" style="margin-bottom: 2%">{% block heading %}{% endblock heading %}</h2>
                 {% block content %}{% endblock content %}
             </div>
         </div>
     </div>
 </section>
+
+<footer class="py-5 bg-footer">
+    <div class="container">
+        <p class="m-0 text-center text-white">&copy; 2020</p>
+    </div>
+</footer>
 </body>
 </html>
