@@ -29,39 +29,36 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link text-style" href="{% url 'wyniki:index' %}">Strona główna <span
-                                class="sr-only">(current)</span></a>
+                        <a class="nav-link text-style{% block menuclass1 %}{% endblock menuclass1 %}"
+                           href="{% url 'wyniki:index' %}">Strona główna</a>
                     </li>
 
                     {% if user.is_staff %}
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-style" href="#" id="navbarDropdown" role="button"
+                            <a class="nav-link dropdown-toggle text-style
+                                    {% block menuclass2 %}{% endblock menuclass2 %}" href="#" id="navbarDropdown"
+                               role="button"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Klasy
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{% url 'wyniki:classes_list' %}">Pokaż klasy</a>
+                                <a class="dropdown-item" href="{% url 'wyniki:classes_list' %}">Lista klas</a>
                                 <a class="dropdown-item" href="{% url 'wyniki:classes_create' %}">Dodaj klasę</a>
                             </div>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-style" href="#" id="navbarDropdown" role="button"
-                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Uczniowie
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{% url 'wyniki:students_list' %}">Pokaż listę uczniów</a>
-                                <a class="dropdown-item" href="{% url 'wyniki:students_create' %}">Dodaj uczniów</a>
-                            </div>
+                        <li class="nav-item">
+                            <a class="nav-link text-style{% block menuclass3 %}{% endblock menuclass3 %}"
+                               href="{% url 'wyniki:students_create' %}">Dodaj uczniów</a>
                         </li>
                         <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-style" href="#" id="navbarDropdown" role="button"
+                        <a class="nav-link dropdown-toggle text-style{% block menuclass4 %}{% endblock menuclass4 %}"
+                           href="#" id="navbarDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Sporty
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{% url 'wyniki:sports_list' %}">Lista sportów</a>
                             <a class="dropdown-item" href="{% url 'wyniki:sports_create' %}">Dodaj sport</a>
-                            <a class="dropdown-item" href="{% url 'wyniki:sports_list' %}">Lista</a>
                         </div>
                     {% endif %}
 
@@ -83,7 +80,7 @@
 
 <hr>
 
-<header class="bg-primary text-white bg-header">
+<header class="text-white bg-header">
     <div class="container text-center">
         <h1 class="header-style1">Aplikacja</h1>
         <h2 class="header-style2">Wyniki</h2>
@@ -93,15 +90,15 @@
 <section class="content-style">
     <div class="container">
         <div class="row">
-            <div class="col-lg-8 mx-auto">
-                <h2 class="header-style2" style="margin-bottom: 2%">{% block heading %}{% endblock heading %}</h2>
+            <div class="col-lg-10 mx-auto">
+                <h2 class="header-style3" style="margin-bottom: 2%">{% block heading %}{% endblock heading %}</h2>
                 {% block content %}{% endblock content %}
             </div>
         </div>
     </div>
 </section>
 
-<footer class="py-5 bg-footer">
+<footer class="bg-footer">
     <div class="container">
         <p class="m-0 text-center text-white">&copy; 2020</p>
     </div>

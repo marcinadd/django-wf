@@ -1,7 +1,7 @@
 {% extends 'template.html' %}
 {% block title %}Dodaj sport{% endblock title %}
-
 {% block heading %}Dodaj sport{% endblock heading %}
+{% block menuclass4 %} active-custom{% endblock menuclass4 %}
 {% block content %}
     <form method="post">{% csrf_token %}
         {{ form.as_p }}

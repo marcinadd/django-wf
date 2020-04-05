@@ -1,7 +1,7 @@
 {% extends 'template.html' %}
 {% block title %}Dodawanie uczniów{% endblock title %}
-
 {% block heading %}Dodaj ucznia:{% endblock heading %}
+{% block menuclass3 %} active-custom{% endblock menuclass3 %}
 {% block content %}
     <form method="post">{% csrf_token %}
         {% for field in form %}
@@ -9,9 +9,9 @@
                 {{ field.label }} {{ field }}
             </div>
         {% endfor %}
-            <div class="field-body">
-                <div class="field">
-                    <div class="control">
+        <div class="field-body">
+            <div class="field">
+                <div class="control">
                         <button class="button is-primary" type="submit" value="Save">
                             Dodaj
                         </button>

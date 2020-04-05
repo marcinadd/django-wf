@@ -42,10 +42,6 @@ class StudentCreate(CreateView):
     success_url = reverse_lazy("wyniki:index")
 
 
-class StudentList(ListView):
-    model = Student
-
-
 class StudentDelete(DeleteView):
     model = Student
     success_url = reverse_lazy("wyniki:index")
