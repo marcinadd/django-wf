@@ -12,6 +12,7 @@ class Class(models.Model):
 class Student(models.Model):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
+    email = models.EmailField(default="", blank=True)
     clazz = models.ForeignKey(Class, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):

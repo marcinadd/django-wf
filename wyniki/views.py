@@ -1,11 +1,15 @@
 from bootstrap_modal_forms.generic import BSModalCreateView, BSModalUpdateView
+from django.contrib import messages
+from django.core.exceptions import MultipleObjectsReturned
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from stronghold.decorators import public
 
+from wyniki import strings
 from wyniki.forms import StudentFormSet, ClassForm, ResultForm, StudentForm, SportForm
+from wyniki.helpers import create_results_list_for_student_and_sport, get_best_result_for_sport
 from wyniki.models import Class, Student, Sport, Result
 
 
@@ -86,29 +90,18 @@ def get_results_for_class(request, class_id, sport_id):
 
     presentation = []
     for student in students:
-        presentation.append({"student": student, "results": []})
+        results = create_results_list_for_student_and_sport(sport, student)
+        presentation.append({"student": student, "results": results})
 
-    for group in groups:
-        group_results = Result.objects.filter(student__clazz=clazz, sport=sport, group=group[0])
-        student_result = {}
-        for result in group_results:
-            student_result[result.student] = result
-        for obj in presentation:
-            student = obj.get("student")
-            result = student_result.get(student)
-            obj["results"].append({"group": group, "result": result})
-
-    best_results_set = Result.objects.filter(sport=sport).order_by("-value" if sport.more_better else "value")
     best_results_class_set = Result.objects.filter(sport=sport, student__clazz=clazz).order_by(
         "-value" if sport.more_better else "value")
-
 
     context = {
         "presentation": presentation,
         "groups": groups,
         "clazz": clazz,
         "sport": sport,
-        "best_result": best_results_set[0] if len(best_results_set) > 0 else None,
+        "best_result": get_best_result_for_sport(sport),
         "best_result_class": best_results_class_set[0] if len(best_results_class_set) > 0 else None
     }
 
@@ -203,6 +196,40 @@ class SportUpdate(UpdateView):
     form_class = SportForm
     success_url = reverse_lazy("wyniki:sports_list")
 
+
 class SportDelete(DeleteView):
     model = Sport
     success_url = reverse_lazy("wyniki:sports_list")
+
+
+# User results
+
+def get_user_results(request):
+    user = request.user
+    student = None
+    students = Student.objects.filter(first_name=user.first_name, last_name=user.last_name)
+
+    if students.count() == 1:
+        student = students[0]
+    elif students.count() > 1:
+        try:
+            student = Student.objects.get(email=user.email)
+        except Student.DoesNotExist:
+            messages.error(request, strings.ERROR_NO_SAME_NAMES_NO_EMAIL)
+        except MultipleObjectsReturned:
+            messages.error(request, strings.ERROR_SAME_EMAILS)
+
+    presentation = []
+    if student:
+        for sport in Sport.objects.all():
+            results = create_results_list_for_student_and_sport(sport, student)
+            presentation.append({"sport": sport, "results": results, "best_result": get_best_result_for_sport(sport)})
+    else:
+        messages.error(request, strings.ERROR_USER_DOES_NOT_EXIST.format(user.get_full_name()))
+
+    context = {
+        "presentation": presentation,
+        "student": student,
+        "groups": Result.GROUP_CHOICES
+    }
+    return render(request, "wyniki/user/user_results.html", context)

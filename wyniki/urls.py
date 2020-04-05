@@ -29,4 +29,6 @@ urlpatterns = [
     path("sports/list", views.SportList.as_view(), name="sports_list"),
     path("sports/update/<int:pk>", views.SportUpdate.as_view(), name="sports_update"),
     path("sports/delete/<int:pk>", views.SportDelete.as_view(), name="sports_delete"),
+
+    path("user/results", views.get_user_results, name="user_results")
 ]

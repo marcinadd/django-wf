@@ -158,4 +158,5 @@ STRONGHOLD_PUBLIC_URLS = (
     r"^/accounts/login/$",
     r"^/accounts/google.*?$",
     r"^/accounts/social/signup/$",
+    r"^/user/.*"
 )

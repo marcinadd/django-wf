@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
 
+from wyniki import strings
 from wyniki.models import Class, Student, Result, Sport
 
 studentA_first_name = "John"
@@ -19,7 +20,6 @@ class IndexTests(TestCase):
 
 
 class SuperUserTestCase(TestCase):
-
     def setUp(self):
         User.objects.create_superuser(username='superuser', password='password')
         self.client.login(username='superuser', password='password')
@@ -258,3 +258,39 @@ class SportDeleteTests(SuperUserTestCase):
         response = self.client.post(reverse("wyniki:sports_delete", args=(sport.id,)))
         self.assertEquals(response.status_code, 302)
         self.assertEquals(Sport.objects.all().count(), 0)
+
+
+class UserResultsTests(TestCase):
+    def setUp(self):
+        User.objects.create_user(username='user', password='password', email="john.smith@example.com",
+                                 first_name=studentA_first_name, last_name=studentA_last_name)
+        self.client.login(username='user', password='password')
+
+    def test_results_ok(self):
+        create_sample_result()
+        response = self.client.get(reverse("wyniki:user_results"))
+        self.assertEquals(response.status_code, 200)
+
+    def test_results_duplicate_user(self):
+        create_sample_result()
+        create_sample_result()
+        response = self.client.get(reverse("wyniki:user_results"))
+        messages = list(response.context['messages'])
+        self.assertEquals(response.status_code, 200)
+        self.assertEquals(messages[0].message, strings.ERROR_NO_SAME_NAMES_NO_EMAIL)
+
+    def test_results_duplicate_email(self):
+        resultA = create_sample_result()
+        resultB = create_sample_result()
+
+        studentA = resultA.student
+        studentB = resultB.student
+        studentA.email = "john.smith@example.com"
+        studentB.email = "john.smith@example.com"
+        studentA.save()
+        studentB.save()
+
+        response = self.client.get(reverse("wyniki:user_results"))
+        messages = list(response.context['messages'])
+        self.assertEquals(response.status_code, 200)
+        self.assertEquals(messages[0].message, strings.ERROR_SAME_EMAILS)
