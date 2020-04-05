@@ -30,7 +30,7 @@ class ClassListTests(SuperUserTestCase):
         response = self.client.get(reverse("wyniki:classes_list"))
         self.assertEqual(response.status_code, 200)
 
-        self.assertContains(response, "Nie znalaziono żadnej klasy")
+        self.assertContains(response, "W naszej bazie danych nie ma żadnych klas!")
         self.assertQuerysetEqual(response.context["object_list"], [])
 
     def test_get_clsses(self):
@@ -74,28 +74,6 @@ class StudentCreateTests(SuperUserTestCase):
         self.assertEqual(saved.first_name, student.get("first_name"))
         self.assertEqual(saved.last_name, student.get("last_name"))
         self.assertEqual(saved.clazz, clazz)
-
-
-class StudentListTests(SuperUserTestCase):
-    def test_get_students_when_no_students(self):
-        response = self.client.get(reverse("wyniki:students_list"))
-        self.assertEqual(response.status_code, 200)
-
-        self.assertContains(response, "Nie znalaziono żadnego ucznia")
-        self.assertQuerysetEqual(response.context["object_list"], [])
-
-    def test_get_clsses(self):
-        clazzA = Class(name="Ia", year=2019)
-        clazzA.save()
-        clazzB = Class(name="Ib", year=2020)
-        clazzB.save()
-        Student(first_name=studentA_first_name, last_name=studentA_last_name, clazz=clazzA).save()
-        Student(first_name=studentB_first_name, last_name=studentB_last_name, clazz=clazzB).save()
-        response = self.client.get(reverse("wyniki:students_list"))
-        self.assertEqual(response.status_code, 200)
-        self.assertQuerysetEqual(response.context["object_list"],
-                                 ["<Student: John Smith Ia 2019>", "<Student: Adam Brown Ib 2020>"],
-                                 ordered=False)
 
 
 class StudentDeleteTests(SuperUserTestCase):

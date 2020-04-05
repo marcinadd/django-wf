@@ -11,7 +11,6 @@ urlpatterns = [
     path("classes/update/<int:pk>", views.ClassUpdate.as_view(), name="classes_update"),
 
     path("students/create", views.StudentCreate.as_view(), name="students_create"),
-    path("students/", views.StudentList.as_view(), name="students_list"),
     path("students/delete/<int:pk>", views.StudentDelete.as_view(), name="students_delete"),
     path("students/update/<int:pk>", views.StudentUpdate.as_view(), name="students_update"),
 

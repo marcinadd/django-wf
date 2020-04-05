@@ -7,7 +7,6 @@
         <table class="table table-striped">
             <thead class="thead-dark">
             <tr>
-                <th class="text-center" scope="col">ID</th>
                 <th class="text-center" scope="col">Nazwa klasy</th>
                 <th class="text-center" scope="col">Rok</th>
                 <th class="text-center" scope="col">Wyniki</th>
@@ -18,8 +17,7 @@
             <tbody>
             {% for clazz in object_list %}
                 <tr>
-                    <th class="text-center">{{ clazz.pk }}</th>
-                    <td class="text-center">{{ clazz.name }}</td>
+                    <th class="text-center">{{ clazz.name }}</th>
                     <td class="text-center">{{ clazz.year }}</td>
                     <td class="text-center">
                         <a href="{% url 'wyniki:classes_sports' clazz.id %}">

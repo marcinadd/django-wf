@@ -46,17 +46,9 @@
                                 <a class="dropdown-item" href="{% url 'wyniki:classes_create' %}">Dodaj klasę</a>
                             </div>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-style
-                                    {% block menuclass3 %}{% endblock menuclass3 %}" href="#" id="navbarDropdown"
-                               role="button"
-                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Uczniowie
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="{% url 'wyniki:students_list' %}">Pokaż listę uczniów</a>
-                                <a class="dropdown-item" href="{% url 'wyniki:students_create' %}">Dodaj uczniów</a>
-                            </div>
+                        <li class="nav-item">
+                            <a class="nav-link text-style{% block menuclass3 %}{% endblock menuclass3 %}"
+                               href="{% url 'wyniki:students_create' %}">Dodaj uczniów</a>
                         </li>
                         <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle text-style{% block menuclass4 %}{% endblock menuclass4 %}"

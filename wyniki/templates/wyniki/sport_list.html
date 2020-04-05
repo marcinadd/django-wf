@@ -7,7 +7,6 @@
         <table class="table table-striped">
             <thead class="thead-dark">
             <tr>
-                <th class="text-center" scope="col">ID</th>
                 <th class="text-center" scope="col">Nazwa sportu</th>
                 <th class="text-center" scope="col">Edytuj</th>
                 <th class="text-center" scope="col">Usuń</th>
@@ -16,8 +15,7 @@
             <tbody>
             {% for sport in object_list %}
                 <tr>
-                    <th class="text-center">{{ sport.pk }}</th>
-                    <td class="text-center">{{ sport.name }}</td>
+                    <th class="text-center">{{ sport.name }}</th>
                     <td class="text-center">
                         <a href="{% url 'wyniki:sports_update' sport.id %}">
                             <button class="btn btn-custom">Edytuj</button>
