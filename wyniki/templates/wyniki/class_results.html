@@ -21,11 +21,11 @@
             <tr>
                 <th> {{ forloop.counter }}</th>
                 <th> {{ student.student.last_name }} {{ student.student.first_name }}</th>
-                {% for obj in student.results %}
+                {% for result in student.results %}
                     <td>
-                        {% if obj.result.value != None %}
-                            <a href="#" class="updateResult" data-id="{% url 'wyniki:results_update'  obj.result.id %}">
-                                {{ obj.result.value }}{{ obj.result.sport.unit }}
+                        {% if result.value != None %}
+                            <a href="#" class="updateResult" data-id="{% url 'wyniki:results_update'  result.id %}">
+                                {{ result.value }}{{ result.sport.unit }}
                             </a>
                         {% else %}
                             <button class="createResult btn btn-success"

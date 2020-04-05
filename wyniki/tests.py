@@ -270,6 +270,8 @@ class UserResultsTests(TestCase):
         create_sample_result()
         response = self.client.get(reverse("wyniki:user_results"))
         self.assertEquals(response.status_code, 200)
+        self.assertContains(response, "1,25")
+
 
     def test_results_duplicate_user(self):
         create_sample_result()

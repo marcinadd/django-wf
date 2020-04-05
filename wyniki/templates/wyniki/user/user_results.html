@@ -1,0 +1,35 @@
+{% extends 'template.html' %}
+{% block title %}Twoje wyniki {% endblock title %}
+
+{% block heading %} Twoje wyniki{% endblock heading %}
+{% block content %}
+    {% if student %}
+        Wyniki dla <b>{{ student }}</b>:
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th scope="col">Sport</th>
+                {% for group in groups %}
+                    <th>{{ group.1 }}</th>
+                {% endfor %}
+                <th scope="col">Rekord szkoły</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for obj in presentation %}
+                <tr>
+                    <td>{{ obj.sport.name }}</td>
+                    {% for result in obj.results %}
+                        {% if result %}
+                            <td>{{ result.value }}{{ result.sport.unit }}</td>
+                        {% else %}
+                            <td>-</td>
+                        {% endif %}
+                    {% endfor %}
+                    <td>{{ obj.best_result.value }}{{ obj.best_result.sport.unit }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}
