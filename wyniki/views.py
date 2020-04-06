@@ -1,5 +1,6 @@
 from bootstrap_modal_forms.generic import BSModalCreateView, BSModalUpdateView
 from django.contrib import messages
+from django.contrib.messages.views import SuccessMessageMixin
 from django.core.exceptions import MultipleObjectsReturned
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
@@ -30,31 +31,38 @@ class ClassDelete(DeleteView):
         return self.post(request, *args, **kwargs)
 
 
-class ClassUpdate(UpdateView):
+class ClassUpdate(SuccessMessageMixin, UpdateView):
     model = Class
     fields = ["name", "year"]
-    success_url = reverse_lazy("wyniki:index")
+    success_url = reverse_lazy("wyniki:classes_list")
+    success_message = strings.SUCCESS_CLASS_EDIT
 
 
-class StudentCreate(CreateView):
+class StudentCreate(SuccessMessageMixin, CreateView):
     model = Student
     form_class = StudentForm
-    success_url = reverse_lazy("wyniki:index")
+    success_url = reverse_lazy("wyniki:classes_list")
+    success_message = strings.SUCCESS_STUDENT_CREATE
 
 
 class StudentDelete(DeleteView):
     model = Student
     success_url = reverse_lazy("wyniki:index")
+    success_message = strings.SUCCESS_STUDENT_DELETE
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, self.success_message)
+        return super(StudentDelete, self).delete(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
 
 
-class StudentUpdate(UpdateView):
+class StudentUpdate(SuccessMessageMixin, UpdateView):
     model = Student
     form_class = StudentForm
     success_url = reverse_lazy("wyniki:index")
-
+    success_message = strings.SUCCESS_STUDENT_EDIT
 
 def create_class_with_students(request):
     if request.method == "GET":
@@ -69,6 +77,7 @@ def create_class_with_students(request):
                 student = form.save(commit=False)
                 student.clazz = clazz
                 student.save()
+        messages.success(request, strings.SUCCESS_CLASS_CREATE)
         return redirect("wyniki:classes_list")
 
     context = {
@@ -129,7 +138,7 @@ def get_students_by_class(request, pk):
 class ResultCreate(BSModalCreateView):
     template_name = "wyniki/result_create.html"
     form_class = ResultForm
-    success_message = 'Ok!'
+    success_message = strings.SUCCESS_RESULT_CREATE
     success_url = reverse_lazy('wyniki:index')
 
     def get_context_data(self, **kwargs):
@@ -154,7 +163,7 @@ class ResultUpdate(BSModalUpdateView):
     template_name = "wyniki/result_update.html"
     form_class = ResultForm
     model = Result
-    success_message = 'Ok!'
+    success_message = strings.SUCCESS_RESULT_EDIT
 
     def get_success_url(self):
         class_id = self.object.student.clazz.id
@@ -165,9 +174,11 @@ class ResultUpdate(BSModalUpdateView):
 class ResultDelete(DeleteView):
     model = Result
     success_url = reverse_lazy('author-list')
+    success_message = strings.SUCCESS_RESULT_DELETE
 
     def delete(self, request, *args, **kwargs):
         self.object = self.get_object()
+        messages.success(self.request, self.success_message)
         return super(ResultDelete, self).delete(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
@@ -177,26 +188,30 @@ class ResultDelete(DeleteView):
         return reverse("wyniki:classes_results", args=(self.object.student.clazz.id, self.object.sport.id))
 
 
-class SportCreate(CreateView):
+class SportCreate(SuccessMessageMixin, CreateView):
     model = Sport
     form_class = SportForm
     success_url = reverse_lazy("wyniki:sports_list")
-
+    success_message = strings.SUCCESS_SPORT_CREATE
 
 class SportList(ListView):
     model = Sport
 
 
-class SportUpdate(UpdateView):
+class SportUpdate(SuccessMessageMixin, UpdateView):
     model = Sport
     form_class = SportForm
     success_url = reverse_lazy("wyniki:sports_list")
-
+    success_message = strings.SUCCESS_SPORT_EDIT
 
 class SportDelete(DeleteView):
     model = Sport
     success_url = reverse_lazy("wyniki:sports_list")
+    success_message = strings.SUCCESS_SPORT_DELETE
 
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, self.success_message)
+        return super(SportDelete, self).delete(request, *args, **kwargs)
 
 # User results
 
