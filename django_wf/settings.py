@@ -44,7 +44,10 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'bootstrap_modal_forms',
     'stronghold',
+    'crispy_forms',
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

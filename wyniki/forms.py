@@ -8,14 +8,13 @@ from wyniki.models import Class, Student, Result, Sport
 class ClassForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ClassForm, self).__init__(*args, **kwargs)
-        add_bootstrap_classes(self.fields)
 
     class Meta:
         model = Class
         fields = {"name", "year"}
         labels = {
-            "name": "Nazwa",
-            "year": "Rok"
+            "name": "Nazwa klasy",
+            "year": "Rok naboru"
         }
 
 
@@ -46,7 +45,6 @@ class StudentForm(forms.ModelForm):
 class SportForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(SportForm, self).__init__(*args, **kwargs)
-        add_bootstrap_classes(self.fields)
 
     class Meta:
         model = Sport
@@ -54,7 +52,7 @@ class SportForm(forms.ModelForm):
         labels = {
             "name": "Nazwa",
             "unit": "Jednostka",
-            "more_better": "Więcej lepiej: "
+            "more_better": "Więcej znaczy lepiej"
         }
 
 
