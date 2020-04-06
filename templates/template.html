@@ -86,6 +86,16 @@
     </div>
 </header>
 
+{% if messages %}
+    {% for message in messages %}
+        <div class="container alert alert-{% if message.tags %}{{ message.tags }}{% endif %} alert-dismissible"
+             role="alert" style="margin-top: 0.5%">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
 <section class="content-style">
     <div class="container">
         <div class="row">
