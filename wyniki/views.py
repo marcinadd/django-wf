@@ -57,10 +57,7 @@ class StudentUpdate(UpdateView):
 
 
 def create_class_with_students(request):
-    if request.method == "GET":
-        formset = StudentFormSet(queryset=Student.objects.none())
-        class_form = ClassForm()
-    elif request.method == "POST":
+    if request.method == "POST":
         formset = StudentFormSet(request.POST)
         class_form = ClassForm(request.POST)
         if class_form.is_valid() and formset.is_valid():
@@ -70,12 +67,14 @@ def create_class_with_students(request):
                 student.clazz = clazz
                 student.save()
         return redirect("wyniki:classes_list")
-
-    context = {
-        "formset": formset,
-        "class_form": class_form
-    }
-    return render(request, "wyniki/class_create.html", context)
+    else:
+        formset = StudentFormSet(queryset=Student.objects.none())
+        class_form = ClassForm()
+        context = {
+            "formset": formset,
+            "class_form": class_form
+        }
+        return render(request, "wyniki/class_create.html", context)
 
 
 def get_results_for_class(request, class_id, sport_id):
@@ -199,7 +198,6 @@ class SportDelete(DeleteView):
 
 
 # User results
-
 def get_user_results(request):
     user = request.user
     student = None

@@ -12,7 +12,7 @@ def login(request):
     return render(request, "users/login.html")
 
 
-def logout(request):
+def logout_from_app(request):
     logout(request)
     messages.info(request, "Zostałeś wylogowany!")
     return redirect(reverse('wyniki:index'))

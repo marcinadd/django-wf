@@ -160,3 +160,5 @@ STRONGHOLD_PUBLIC_URLS = (
     r"^/accounts/social/signup/$",
     r"^/user/.*"
 )
+
+ALLOWED_DOMAIN = "lo1.sandomierz.pl"

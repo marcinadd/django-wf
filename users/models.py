@@ -3,6 +3,8 @@ from allauth.socialaccount.adapter import DefaultSocialAccountAdapter
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
+from django_wf.settings import ALLOWED_DOMAIN
+
 
 class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
 
@@ -13,5 +15,5 @@ class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
 
     def pre_social_login(self, request, sociallogin):
         user = sociallogin.account.user
-        if user.email.split("@")[1] != "lo1.sandomierz.pl":
+        if user.email.split("@")[1] != ALLOWED_DOMAIN:
             raise ImmediateHttpResponse(HttpResponseRedirect(reverse("users:login") + "?err_domain=true"))
