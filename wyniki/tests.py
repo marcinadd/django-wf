@@ -46,7 +46,7 @@ class ClassDeleteTests(SuperUserTestCase):
     def test_delete_class_which_exists(self):
         clazz = Class(name="Ia", year=2019)
         clazz.save()
-        response = self.client.get(reverse("wyniki:classes_delete", args=(clazz.id,)))
+        response = self.client.post(reverse("wyniki:classes_delete", args=(clazz.id,)))
         self.assertEqual(response.status_code, 302)
         self.assertEqual(Class.objects.all().count(), 0)
 
@@ -80,7 +80,7 @@ class StudentDeleteTests(SuperUserTestCase):
     def test_delete_student_which_exists(self):
         student = Student(first_name=studentA_first_name, last_name=studentA_last_name)
         student.save()
-        response = self.client.get(reverse("wyniki:students_delete", args=(student.id,)))
+        response = self.client.post(reverse("wyniki:students_delete", args=(student.id,)))
         self.assertEqual(response.status_code, 302)
         self.assertEqual(Student.objects.all().count(), 0)
 

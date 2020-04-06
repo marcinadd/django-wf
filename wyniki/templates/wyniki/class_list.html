@@ -3,6 +3,7 @@
 {% block heading %}Lista klas:{% endblock heading %}
 {% block menuclass2 %} active-custom{% endblock menuclass2 %}
 {% block content %}
+    {% include "wyniki/components/modal-form.html" %}
     {% if object_list %}
         <table class="table table-striped">
             <thead class="thead-dark">
@@ -12,6 +13,7 @@
                 <th class="text-center" scope="col">Wyniki</th>
                 <th class="text-center" scope="col">Uczniowie</th>
                 <th class="text-center" scope="col">Edytuj</th>
+                <th class="text-center" scope="col">Usuń</th>
             </tr>
             </thead>
             <tbody>
@@ -34,6 +36,11 @@
                             <button type="button" class="btn btn-custom">Edytuj</button>
                         </a>
                     </td>
+                    <td class="text-center">
+                        <a class="delete-class" data-id="{% url 'wyniki:classes_delete' clazz.id %}">
+                            <button type="button" class="btn btn-custom" style="background-color: #dc3545">Usuń</button>
+                        </a>
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>
@@ -44,4 +51,12 @@
             <button type="button" class="btn btn-custom">Dodaj klasę</button>
         </a>
     {% endif %}
+
+    <script type="text/javascript">
+        $(function () {
+            $(".delete-class").each(function () {
+                $(this).modalForm({formURL: $(this).data('id')});
+            });
+        });
+    </script>
 {% endblock content %}

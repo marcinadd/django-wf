@@ -4,6 +4,7 @@
 {% block heading %}Uczniowie klasy {{ clazz }}{% endblock heading %}
 {% block menuclass3 %} active-custom{% endblock menuclass3 %}
 {% block content %}
+    {% include "wyniki/components/modal-form.html" %}
     {% if students %}
         <table class="table table-striped">
             <thead class="thead-dark">
@@ -27,7 +28,7 @@
                         </a>
                     </td>
                     <td class="text-center">
-                        <a href="{% url "wyniki:students_delete" student.id %}">
+                        <a class="delete-student" data-id="{% url 'wyniki:students_delete' student.id %}">
                             <button class="btn btn-custom" style="background-color: #dc3545">Usuń</button>
                         </a>
                     </td>
@@ -41,4 +42,12 @@
             <button type="button" class="btn btn-custom">Dodaj uczniów</button>
         </a>
     {% endif %}
+
+    <script type="text/javascript">
+        $(function () {
+            $(".delete-student").each(function () {
+                $(this).modalForm({formURL: $(this).data('id')});
+            });
+        });
+    </script>
 {% endblock content %}
