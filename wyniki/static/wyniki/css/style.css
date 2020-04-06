@@ -92,3 +92,7 @@ footer {
     border-radius: 10px;
     color: #fff;
 }
+
+.asteriskField {
+    display: none;
+}
