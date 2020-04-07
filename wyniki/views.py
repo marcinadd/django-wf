@@ -235,3 +235,12 @@ def get_user_results(request):
         "groups": Result.GROUP_CHOICES
     }
     return render(request, "wyniki/user/user_results.html", context)
+
+def get_best_results(request,pk):
+    sport = Sport.objects.get(id=pk)
+    best_results = Result.objects.filter(sport=sport).order_by(
+        "-value" if sport.more_better else "value")[:10]
+    context = {
+        "best_results": best_results
+    }
+    return render(request,"wyniki/best_results.html",context)
