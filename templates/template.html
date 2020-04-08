@@ -60,7 +60,12 @@
                             <a class="dropdown-item" href="{% url 'wyniki:sports_create' %}">Dodaj sport</a>
                         </div>
                     {% endif %}
-
+                    {% if user.is_authenticated and not user.is_staff %}
+                        <li class="nav-item">
+                            <a class="nav-link text-style{% block menuclass5 %}{% endblock menuclass5 %}"
+                               href="{% url 'wyniki:user_results' %}">Wyniki</a>
+                        </li>
+                    {% endif %}
                     {% if not user.is_authenticated %}
                         <li class="nav-item">
                             <a class="nav-link text-style active-custom" href="{% url 'users:login' %}">Zaloguj się</a>

@@ -3,29 +3,31 @@
 
 {% block heading %} {{ clazz.name }} {{ clazz.year }} {% endblock heading %}
 {% block content %}
-    <table class="table is-hoverable">
-        <thead>
-        <tr>
-            <th><abbr title="Nazwa">Nazwa</abbr></th>
-            <th>Liczba wpisów:</th>
-            <th>Przejdź:</th>
-        </tr>
-        <tbody>
-
-        {% for sport in sports %}
+    {% if sports %}
+        <table class="table table-striped">
+            <thead class="thead-dark">
             <tr>
-
-                <th>{{ sport.name }}</th>
-                <td>-----</td>
-                <td>
-                    <button type="button" class="btn btn-primary">
-                        <a href="{% url 'wyniki:classes_results' clazz.id sport.id %}">Wyświetl</a>
-                    </button>
-                </td>
+                <th class="text-center" scope="col">Nazwa sportu</th>
+                <th class="text-center" scope="col">Przejdź</th>
             </tr>
-        {% empty %}
-            <p>Nie znalaziono żadnego sportu</p>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {% for sport in sports %}
+                <tr>
+                    <th class="text-center">{{ sport.name }}</th>
+                    <td class="text-center">
+                        <a href="{% url 'wyniki:classes_results' clazz.id sport.id %}">
+                            <button class="btn btn-custom">Wyświetl</button>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>W naszej bazie danych nie ma żadnych sportów!</p>
+        <a href="{% url 'wyniki:sports_create' %}">
+            <button type="button" class="btn btn-custom">Dodaj sport</button>
+        </a>
+    {% endif %}
 {% endblock content %}
