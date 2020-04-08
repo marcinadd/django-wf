@@ -47,7 +47,7 @@ class ClassListView(ListView):
 
 class ClassUpdateView(SuccessMessageMixin, UpdateView):
     model = Class
-    fields = ["name", "year"]
+    form_class = ClassForm
     success_url = reverse_lazy("wyniki:classes_list")
     success_message = strings.SUCCESS_CLASS_UPDATE
 

@@ -14,6 +14,6 @@ class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
         return user
 
     def pre_social_login(self, request, sociallogin):
-        user = sociallogin.account.user
+        user = sociallogin.user
         if user.email.split("@")[1] != ALLOWED_DOMAIN:
             raise ImmediateHttpResponse(HttpResponseRedirect(reverse("users:login") + "?err_domain=true"))
