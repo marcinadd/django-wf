@@ -11,7 +11,7 @@ from users import strings
 @public
 def login(request):
     context = None
-    if SocialAccount.objects.all().count() == 1:
+    if SocialAccount.objects.all().count() == 0:
         messages.warning(request, strings.WARNING_SOCIAL_APP_NO_CONFIG)
         context = {"button_disabled": True}
     return render(request, "users/login.html", context)

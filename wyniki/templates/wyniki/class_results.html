@@ -1,30 +1,30 @@
 {% extends 'template.html' %}
 {% block title %}Wyniki dla klasy {{ clazz }} {{ sport }} {% endblock title %}
 
-{% block heading %}Wyniki dla klasy {{ clazz }} <i>{{ sport }}</i>{% endblock heading %}
+{% block heading %}Wyniki dla klasy {{ clazz }} w sporcie <i>{{ sport }}</i>{% endblock heading %}
 {% block content %}
     {% load static %}
     <script src="{% static 'wyniki/js/jquery.bootstrap.modal.forms.min.js' %}"></script>
-    <table class="table is-hoverable">
-        <thead>
-        <tr>
+    <table class="table table-striped">
+        <thead class="thead-dark">
+        <tr class="text-center">
             <th>Lp.</th>
             <th>Nazwisko i imię</th>
             {% for group in groups %}
-                <th>{{ group.1 }}</th>
+                <th class="text-center">{{ group.1 }}</th>
             {% endfor %}
         </tr>
         </thead>
         <tbody>
         {% for student in presentation %}
-            <tr>
+            <tr class="text-center">
                 <th> {{ forloop.counter }}</th>
                 <th> {{ student.student.last_name }} {{ student.student.first_name }}</th>
                 {% for result in student.results %}
                     <td>
                         {% if result.value != None %}
                             <a href="#" class="updateResult" data-id="{% url 'wyniki:results_update'  result.id %}">
-                                {{ result.value }} {{ result.sport.unit }}
+                                {{ result.value }}{{ result.sport.unit }}
                             </a>
                         {% else %}
                             <button class="createResult btn btn-success"
@@ -38,12 +38,31 @@
         {% endfor %}
         </tbody>
     </table>
-    <div>
-        Rekord: {{ best_result.student }} {{ best_result.value }} {{ best_result.sport.unit }}
-    </div>
-    <div>
-        Rekord klasy: {{ best_result_class.student }} {{ best_result_class.value }} {{ best_result_class.sport.unit }}
-    </div>
+
+    <h2 class="header-style3" style="margin-bottom: 2%; margin-top: 5%">Rekordy:</h2>
+    <table class="table">
+        <thead>
+        <tr class="text-center">
+            <th></th>
+            <th>Uczeń</th>
+            <th>Wynik</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="text-center">
+            <th>Rekord klasy</th>
+            <td>{{ best_result_class.student.first_name }} {{ best_result_class.student.last_name }}</td>
+            <td>{{ best_result_class.value }}{{ best_result_class.sport.unit }}</td>
+        </tr>
+        <tr class="text-center">
+            <th>Rekord szkoły</th>
+            <td>{% if best_result.value %}{{ best_result.student.first_name }} {{ best_result.student.last_name }} kl.
+                {{ best_result.student.clazz }}{% endif %}</td>
+            <td>{{ best_result.value }}{{ best_result.sport.unit }}</td>
+        </tr>
+        </tbody>
+    </table>
+
     <div class="modal fade" tabindex="-1" role="dialog" id="modal">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -51,6 +70,7 @@
             </div>
         </div>
     </div>
+
     <script type="text/javascript">
         $(document).ready(function () {
             $(".createResult").each(function () {
@@ -62,4 +82,5 @@
 
         });
     </script>
+
 {% endblock content %}
