@@ -29,5 +29,6 @@ urlpatterns = [
     path("sports/update/<int:pk>", views.SportUpdate.as_view(), name="sports_update"),
     path("sports/delete/<int:pk>", views.SportDeleteView.as_view(), name="sports_delete"),
 
-    path("user/results", views.get_user_results, name="user_results")
+    path("user/results", views.get_user_results, name="user_results"),
+    path("sports/<int:pk>/bests", views.get_best_results, name="sports_best"),
 ]

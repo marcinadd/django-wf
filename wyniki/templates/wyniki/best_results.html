@@ -1,0 +1,24 @@
+{% extends 'template.html' %}
+{% block title %}Sporty{% endblock title %}
+{% block content %}
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th class="text-center" scope="col">#</th>
+            <th class="text-center" scope="col">Imię</th>
+            <th class="text-center" scope="col">Nazwisko</th>
+            <th class="text-center" scope="col">Wynik</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for result in best_results %}
+            <tr>
+                <th class="text-center">{{ forloop.counter }}</th>
+                <td class="text-center">{{ result.student.first_name }}</td>
+                <td class="text-center">{{ result.student.last_name }}</td>
+                <td class="text-center">{{ result.value }} {{ result.sport.unit }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock content %}

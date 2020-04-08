@@ -11,12 +11,18 @@
                 <th class="text-center" scope="col">Nazwa sportu</th>
                 <th class="text-center" scope="col">Edytuj</th>
                 <th class="text-center" scope="col">Usuń</th>
+                <th class="text-center" scope="col"></th>
             </tr>
             </thead>
             <tbody>
             {% for sport in object_list %}
                 <tr>
                     <th class="text-center">{{ sport.name }}</th>
+                    <td class="text-center">
+                        <a href="{% url 'wyniki:sports_best' sport.id %}">
+                            <button class="btn btn-custom">Najlepsze</button>
+                        </a>
+                    </td>
                     <td class="text-center">
                         <a href="{% url 'wyniki:sports_update' sport.id %}">
                             <button class="btn btn-custom">Edytuj</button>
