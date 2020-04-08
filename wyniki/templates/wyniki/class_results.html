@@ -6,7 +6,6 @@
     {% load static %}
     <script src="{% static 'wyniki/js/jquery.bootstrap.modal.forms.min.js' %}"></script>
     <table class="table is-hoverable">
-
         <thead>
         <tr>
             <th>Lp.</th>
@@ -25,7 +24,7 @@
                     <td>
                         {% if result.value != None %}
                             <a href="#" class="updateResult" data-id="{% url 'wyniki:results_update'  result.id %}">
-                                {{ result.value }}{{ result.sport.unit }}
+                                {{ result.value }} {{ result.sport.unit }}
                             </a>
                         {% else %}
                             <button class="createResult btn btn-success"
@@ -39,15 +38,12 @@
         {% endfor %}
         </tbody>
     </table>
-
     <div>
-        Rekord: {{ best_result.student }} {{ best_result.value }}{{ best_result.sport.unit }}
+        Rekord: {{ best_result.student }} {{ best_result.value }} {{ best_result.sport.unit }}
     </div>
     <div>
-        Rekord klasy: {{ best_result_class.student }} {{ best_result_class.value }}{{ best_result_class.sport.unit }}
+        Rekord klasy: {{ best_result_class.student }} {{ best_result_class.value }} {{ best_result_class.sport.unit }}
     </div>
-
-
     <div class="modal fade" tabindex="-1" role="dialog" id="modal">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -55,7 +51,6 @@
             </div>
         </div>
     </div>
-
     <script type="text/javascript">
         $(document).ready(function () {
             $(".createResult").each(function () {
@@ -67,5 +62,4 @@
 
         });
     </script>
-
 {% endblock content %}

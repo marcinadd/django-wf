@@ -9,9 +9,9 @@
             <thead class="thead-dark">
             <tr>
                 <th class="text-center" scope="col">Nazwa sportu</th>
+                <th class="text-center" scope="col">TOP10</th>
                 <th class="text-center" scope="col">Edytuj</th>
                 <th class="text-center" scope="col">Usuń</th>
-                <th class="text-center" scope="col"></th>
             </tr>
             </thead>
             <tbody>
@@ -20,7 +20,7 @@
                     <th class="text-center">{{ sport.name }}</th>
                     <td class="text-center">
                         <a href="{% url 'wyniki:sports_best' sport.id %}">
-                            <button class="btn btn-custom">Najlepsze</button>
+                            <button class="btn btn-custom">TOP10</button>
                         </a>
                     </td>
                     <td class="text-center">

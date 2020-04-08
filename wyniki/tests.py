@@ -154,7 +154,7 @@ class ClassResultsTests(SuperUserTestCase):
 class SportDetailsTests(SuperUserTestCase):
     def test_get_details_for_specified_class(self):
         clazz = Class.objects.create(name="Ia", year=2019)
-        sport = Sport.objects.create(name="sample")
+        Sport.objects.create(name="sample")
         response = self.client.get(reverse("wyniki:classes_sports", args=[clazz.id, ]))
         self.assertEquals(response.status_code, 200)
         self.assertEquals(response.context["clazz"], clazz)
@@ -249,7 +249,6 @@ class UserResultsTests(TestCase):
         response = self.client.get(reverse("wyniki:user_results"))
         self.assertEquals(response.status_code, 200)
         self.assertContains(response, "1,25")
-
 
     def test_results_duplicate_user(self):
         create_sample_result()

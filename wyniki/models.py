@@ -1,9 +1,10 @@
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 
 
 class Class(models.Model):
     name = models.CharField(max_length=5)
-    year = models.SmallIntegerField()
+    year = models.SmallIntegerField(validators=[MinValueValidator(2010), MaxValueValidator(2030)])
 
     def __str__(self):
         return self.name + " " + str(self.year)
@@ -46,7 +47,7 @@ class Result(models.Model):
         (THIRD, "Klasa III")
     ]
 
-    value = models.DecimalField(max_digits=4, decimal_places=2)
+    value = models.DecimalField(max_digits=6, decimal_places=2, validators=[MinValueValidator(0.0)])
     student = models.ForeignKey(Student, on_delete=models.SET_NULL, null=True)
     sport = models.ForeignKey(Sport, on_delete=models.SET_NULL, null=True)
     group = models.CharField(max_length=20, choices=GROUP_CHOICES, default=FIRST)

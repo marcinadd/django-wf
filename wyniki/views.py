@@ -23,12 +23,14 @@ def create_class_with_students(request):
     if request.method == "POST":
         formset = StudentFormSet(request.POST)
         class_form = ClassForm(request.POST)
-        if class_form.is_valid() and formset.is_valid():
-            clazz = class_form.save()
-            for form in formset:
-                student = form.save(commit=False)
-                student.clazz = clazz
-                student.save()
+        if not class_form.is_valid() or not formset.is_valid():
+            return render(request, "wyniki/class_create.html", {"class_form": class_form, "formset": formset})
+
+        clazz = class_form.save()
+        for form in formset:
+            student = form.save(commit=False)
+            student.clazz = clazz
+            student.save()
         messages.success(request, strings.SUCCESS_CLASS_CREATE)
         return redirect("wyniki:classes_list")
     else:
@@ -38,7 +40,7 @@ def create_class_with_students(request):
             "formset": formset,
             "class_form": class_form
         }
-        return render(request, "wyniki/class_create.html", context)
+    return render(request, "wyniki/class_create.html", context)
 
 
 class ClassListView(ListView):
@@ -236,11 +238,13 @@ def get_user_results(request):
     }
     return render(request, "wyniki/user/user_results.html", context)
 
-def get_best_results(request,pk):
+
+def get_best_results(request, pk):
     sport = Sport.objects.get(id=pk)
     best_results = Result.objects.filter(sport=sport).order_by(
         "-value" if sport.more_better else "value")[:10]
     context = {
-        "best_results": best_results
+        "best_results": best_results,
+        "sport": sport
     }
-    return render(request,"wyniki/best_results.html",context)
+    return render(request, "wyniki/best_results.html", context)
