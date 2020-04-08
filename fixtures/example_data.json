@@ -1,0 +1,336 @@
+[
+{
+  "model": "wyniki.class",
+  "pk": 1,
+  "fields": {
+    "name": "3A",
+    "year": 2017
+  }
+},
+{
+  "model": "wyniki.class",
+  "pk": 2,
+  "fields": {
+    "name": "2B",
+    "year": 2018
+  }
+},
+{
+  "model": "wyniki.student",
+  "pk": 1,
+  "fields": {
+    "first_name": "Filip",
+    "last_name": "Baranowski",
+    "email": "",
+    "clazz": 1
+  }
+},
+{
+  "model": "wyniki.student",
+  "pk": 2,
+  "fields": {
+    "first_name": "Borys",
+    "last_name": "Mazurek",
+    "email": "",
+    "clazz": 1
+  }
+},
+{
+  "model": "wyniki.student",
+  "pk": 3,
+  "fields": {
+    "first_name": "Alfred",
+    "last_name": "Zakrzewski",
+    "email": "",
+    "clazz": 1
+  }
+},
+{
+  "model": "wyniki.student",
+  "pk": 4,
+  "fields": {
+    "first_name": "Arkadiusz",
+    "last_name": "Marciniak",
+    "email": "",
+    "clazz": 1
+  }
+},
+{
+  "model": "wyniki.student",
+  "pk": 5,
+  "fields": {
+    "first_name": "Henryk",
+    "last_name": "Zi\u00f3\u0142kowski",
+    "email": "",
+    "clazz": 1
+  }
+},
+{
+  "model": "wyniki.student",
+  "pk": 6,
+  "fields": {
+    "first_name": "Amir",
+    "last_name": "Czarnecki",
+    "email": "",
+    "clazz": 2
+  }
+},
+{
+  "model": "wyniki.student",
+  "pk": 7,
+  "fields": {
+    "first_name": "Bronis\u0142aw",
+    "last_name": "W\u00f3jcik",
+    "email": "",
+    "clazz": 2
+  }
+},
+{
+  "model": "wyniki.student",
+  "pk": 8,
+  "fields": {
+    "first_name": "Patryk",
+    "last_name": "Zakrzewski",
+    "email": "",
+    "clazz": 2
+  }
+},
+{
+  "model": "wyniki.student",
+  "pk": 9,
+  "fields": {
+    "first_name": "Rafa\u0142",
+    "last_name": "Sadowski",
+    "email": "",
+    "clazz": 2
+  }
+},
+{
+  "model": "wyniki.student",
+  "pk": 10,
+  "fields": {
+    "first_name": "Pawe\u0142",
+    "last_name": "Jankowski",
+    "email": "",
+    "clazz": 2
+  }
+},
+{
+  "model": "wyniki.sport",
+  "pk": 1,
+  "fields": {
+    "name": "Bieg na 100m",
+    "unit": "s",
+    "more_better": false
+  }
+},
+{
+  "model": "wyniki.sport",
+  "pk": 2,
+  "fields": {
+    "name": "Skok w dal",
+    "unit": "m",
+    "more_better": true
+  }
+},
+{
+  "model": "wyniki.result",
+  "pk": 1,
+  "fields": {
+    "value": "18.00",
+    "student": 1,
+    "sport": 1,
+    "group": "FIRST"
+  }
+},
+{
+  "model": "wyniki.result",
+  "pk": 2,
+  "fields": {
+    "value": "18.60",
+    "student": 4,
+    "sport": 1,
+    "group": "THIRD"
+  }
+},
+{
+  "model": "wyniki.result",
+  "pk": 3,
+  "fields": {
+    "value": "17.84",
+    "student": 3,
+    "sport": 1,
+    "group": "SECOND"
+  }
+},
+{
+  "model": "wyniki.result",
+  "pk": 4,
+  "fields": {
+    "value": "17.95",
+    "student": 5,
+    "sport": 1,
+    "group": "THIRD"
+  }
+},
+{
+  "model": "wyniki.result",
+  "pk": 5,
+  "fields": {
+    "value": "6.80",
+    "student": 1,
+    "sport": 2,
+    "group": "FIRST"
+  }
+},
+{
+  "model": "wyniki.result",
+  "pk": 6,
+  "fields": {
+    "value": "7.20",
+    "student": 4,
+    "sport": 2,
+    "group": "THIRD"
+  }
+},
+{
+  "model": "wyniki.result",
+  "pk": 7,
+  "fields": {
+    "value": "6.72",
+    "student": 2,
+    "sport": 2,
+    "group": "FIRST"
+  }
+},
+{
+  "model": "wyniki.result",
+  "pk": 8,
+  "fields": {
+    "value": "8.40",
+    "student": 3,
+    "sport": 2,
+    "group": "THIRD"
+  }
+},
+{
+  "model": "wyniki.result",
+  "pk": 9,
+  "fields": {
+    "value": "9.00",
+    "student": 5,
+    "sport": 2,
+    "group": "SECOND"
+  }
+},
+{
+  "model": "wyniki.result",
+  "pk": 10,
+  "fields": {
+    "value": "15.20",
+    "student": 6,
+    "sport": 1,
+    "group": "THIRD"
+  }
+},
+{
+  "model": "wyniki.result",
+  "pk": 11,
+  "fields": {
+    "value": "11.21",
+    "student": 10,
+    "sport": 1,
+    "group": "SECOND"
+  }
+},
+{
+  "model": "wyniki.result",
+  "pk": 12,
+  "fields": {
+    "value": "10.95",
+    "student": 9,
+    "sport": 1,
+    "group": "THIRD"
+  }
+},
+{
+  "model": "wyniki.result",
+  "pk": 13,
+  "fields": {
+    "value": "19.20",
+    "student": 7,
+    "sport": 1,
+    "group": "FIRST"
+  }
+},
+{
+  "model": "wyniki.result",
+  "pk": 14,
+  "fields": {
+    "value": "9.80",
+    "student": 8,
+    "sport": 1,
+    "group": "THIRD"
+  }
+},
+{
+  "model": "wyniki.result",
+  "pk": 15,
+  "fields": {
+    "value": "12.00",
+    "student": 6,
+    "sport": 2,
+    "group": "FIRST"
+  }
+},
+{
+  "model": "wyniki.result",
+  "pk": 16,
+  "fields": {
+    "value": "7.00",
+    "student": 10,
+    "sport": 2,
+    "group": "SECOND"
+  }
+},
+{
+  "model": "wyniki.result",
+  "pk": 17,
+  "fields": {
+    "value": "6.50",
+    "student": 9,
+    "sport": 2,
+    "group": "THIRD"
+  }
+},
+{
+  "model": "wyniki.result",
+  "pk": 18,
+  "fields": {
+    "value": "6.20",
+    "student": 7,
+    "sport": 2,
+    "group": "SECOND"
+  }
+},
+{
+  "model": "wyniki.result",
+  "pk": 19,
+  "fields": {
+    "value": "8.30",
+    "student": 8,
+    "sport": 2,
+    "group": "FIRST"
+  }
+},
+{
+  "model": "wyniki.result",
+  "pk": 20,
+  "fields": {
+    "value": "11.50",
+    "student": 2,
+    "sport": 1,
+    "group": "FIRST"
+  }
+}
+]

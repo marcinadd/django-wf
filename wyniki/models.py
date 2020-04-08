@@ -51,8 +51,7 @@ class Result(models.Model):
     student = models.ForeignKey(Student, on_delete=models.SET_NULL, null=True)
     sport = models.ForeignKey(Sport, on_delete=models.SET_NULL, null=True)
     group = models.CharField(max_length=20, choices=GROUP_CHOICES, default=FIRST)
-    date = models.DateTimeField(null=True)
-
+    
     def __str__(self):
         return str(self.value) + " " + self.sport.unit + " " + str(self.sport) + " " + str(self.group) + " " + str(
             self.student)
