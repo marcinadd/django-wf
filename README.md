@@ -5,7 +5,6 @@ Pozwala na podstawowe operacje na danych (dla nauczyciela), oraz na wyświetlani
 Dostęp do aplikacji jest przyznawany poprzez zalogowanie
 
 ## Uruchomienie
-
 1. Sklonuj repozytorium:
     ```shell script
     $ git clone https://github.com/marcinadd/django-wf.git
@@ -41,12 +40,12 @@ Aby uruchomić testy w katalogu głównym repozytorium wywołaj polecenie:
    $ python manage.py test 
    ```
 ## Konfiguracja
-* Dodawanie i podgląd informacji wymaga (obecnie) zalogowania jako superużytkownik 
+* Dodawanie i podgląd informacji wymaga zalogowania jako superużytkownik 
  (na konto utworzone w pkt.7 instrukcji uruchomienia projektu) pod adresem:
     ```
     http://localhost:8000/admin
     ```
-* Do aplikacji można logować się przez konta Google w domenie szkolnej, lecz należy pierw uzupełnić **client_id** i **secret**
+* Do aplikacji należy logować się przez konta Google w domenie szkolnej, lecz należy pierw uzupełnić **client_id** i **secret**
 w *fixtures/allauth.json* i wydać polecenie: 
     ```shell script
     $ python manage.py loaddata fixtures/allauth.json
@@ -57,6 +56,12 @@ w *fixtures/allauth.json* i wydać polecenie:
     dodać możliwość zmiany i wyświetlania wszystkich danych, należy mianować użytkownika na 
     superużytkownika w panelu administracyjnym. Teraz użytkownik (nauczyciel) może logować się ze swojego konta Google.
  
+## Przykłaoowe dane
+Aby wczytać przykładowe dane należy wydać polecenie:
+```shell script
+$ python manage.py loaddata fixtures/example.json
+```
+
 ## Twórcy
 * marcinadd
 * marcins1
