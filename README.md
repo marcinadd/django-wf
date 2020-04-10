@@ -56,10 +56,10 @@ w *fixtures/allauth.json* i wydać polecenie:
     dodać możliwość zmiany i wyświetlania wszystkich danych, należy mianować użytkownika na 
     superużytkownika w panelu administracyjnym. Teraz użytkownik (nauczyciel) może logować się ze swojego konta Google.
  
-## Przykłaoowe dane
+## Przykładowe dane
 Aby wczytać przykładowe dane należy wydać polecenie:
 ```shell script
-$ python manage.py loaddata fixtures/example.json
+$ python manage.py loaddata fixtures/example_data.json
 ```
 
 ## Twórcy
